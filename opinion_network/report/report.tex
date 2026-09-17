@@ -1,0 +1,300 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{xcolor}
+
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{[TODO: #1]}}}
+
+\title{Assignment 1: Opinion Network Formation}
+\author{Team Name: Complex Network of Dynamic People}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+% =====================================================================
+\section*{GitHub Link to Code}
+\todo{Insert GitHub repository link here. Repo should contain
+build\_network.py, the outputs/ and figures/ folders, and any
+additional scripts from teammates (item-network, null-model validation).}
+
+% =====================================================================
+\section{Dataset Documentation}
+\label{sec:dataset}
+
+The data cleaning and encoding pipeline described below was implemented
+as part of the network construction workstream (see \texttt{build\_network.py});
+this section documents and elaborates on that process.
+
+\todo{KRIS: write up the description below (approx. 1 page), and add
+your own new material -- descriptive statistics, distribution plots, a
+note on survey bias, etc. See outputs/encoded\_responses.csv for the
+cleaned data.}
+
+\begin{itemize}
+    \item Describe the raw survey: N respondents, 60 Likert-scale items across
+    4 topics (Technology, Education, Ethics/Society, Environment), 5-point
+    scale (Strongly Disagree -- Strongly Agree).
+    \item Explain missing-data handling: "No Comments" entries were treated as
+    missing responses rather than a neutral opinion. Respondents who left more
+    than 50\% of the survey blank were dropped (9 of 96 respondents removed,
+    leaving 87). Remaining sparse gaps were filled with each item's
+    class-average response.
+    \item Explain the numeric encoding: Strongly Disagree = -2 ... Strongly
+    Agree = +2.
+\end{itemize}
+
+\todo{KRIS: add your own contribution here -- descriptive statistics
+per topic (mean/spread), distribution plots, a discussion of self-report
+survey bias (social desirability, etc.), or other data exploration.}
+
+% =====================================================================
+\section{Pipeline Followed}
+\label{sec:pipeline}
+
+This section describes how the raw survey responses were transformed into
+an opinion network.
+
+\subsection{Data Cleaning and Encoding}
+Respondents who left more than 50\% of the survey unanswered were removed
+(9 of 96 respondents), leaving 87 usable respondents. The string
+``No Comments'' was treated as a missing value rather than a neutral
+opinion. Likert responses were mapped to an ordinal numeric scale from
+$-2$ (Strongly Disagree) to $+2$ (Strongly Agree), and any remaining
+sparse gaps were filled with that item's class-average response.
+
+\subsection{Similarity Measure}
+Pairwise opinion similarity between respondents was computed using the
+\textbf{Pearson correlation coefficient} across their answer vectors,
+rather than cosine similarity or Euclidean distance. Correlation was
+chosen because it captures whether two respondents' opinions rise and
+fall \emph{together} across statements, and is invariant to a
+respondent's individual tendency to answer more or less extremely
+overall -- a scale bias rather than a genuine opinion difference.
+
+\subsection{Graph Construction}
+The dense $87 \times 87$ similarity matrix was sparsified using
+\textbf{mutual $k$-Nearest-Neighbours} with $k=8$: an edge between
+respondents $i$ and $j$ was retained only if each was among the other's
+top-8 most similar peers. This produces a graph reflecting genuinely
+reciprocal opinion closeness, avoids an uninformative fully-connected
+graph, and sidesteps the need to hand-tune a similarity threshold.
+
+In addition to the overall network (built from all 60 items), four
+topic-specific sub-networks were constructed using the same procedure
+restricted to each topic's 15 items, to allow cross-topic comparison
+of clustering structure.
+
+\subsection{Community Detection}
+Louvain modularity maximization was applied to the overall network to
+identify opinion communities. The same procedure was applied
+independently to each topic sub-network for comparison.
+
+\todo{PRATHISH (Statistical Validation): briefly describe your null-model validation
+methodology here (1 short paragraph) -- e.g. ``To assess whether the
+observed community structure is statistically meaningful, modularity
+was compared against a null distribution generated from N random graphs
+matched on node count, edge count, and degree sequence...''}
+
+% =====================================================================
+\section{Analysis and Visualizations}
+\label{sec:analysis}
+
+\subsection{Overall Network Structure}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lr}
+\toprule
+Metric & Value \\
+\midrule
+Nodes & 87 \\
+Edges & 134 \\
+Density & 0.036 \\
+Average clustering coefficient & 0.157 \\
+Average path length (largest component) & 3.86 \\
+Diameter (largest component) & 9 \\
+Number of connected components & 18 \\
+Largest component size & 66 \\
+Number of Louvain communities & 25 \\
+Modularity & 0.578 \\
+\bottomrule
+\end{tabular}
+\caption{Overall opinion network metrics.}
+\label{tab:overall_metrics}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.75\textwidth]{../figures/overall_network.png}
+\caption{Overall opinion network, nodes colored by Louvain community.}
+\label{fig:overall_network}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.6\textwidth]{../figures/degree_distribution.png}
+\caption{Degree distribution of the overall opinion network.}
+\label{fig:degree_dist}
+\end{figure}
+
+\subsection{Topic Sub-Networks and Cross-Topic Comparison}
+
+Table~\ref{tab:topic_metrics} summarizes the four topic-specific
+sub-networks.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+Topic & Edges & Density \\
+\midrule
+Technology & 201 & 0.054 \\
+Education & 176 & 0.047 \\
+Ethics/Society & 227 & 0.061 \\
+Environment & 193 & 0.052 \\
+\bottomrule
+\end{tabular}
+\caption{Topic sub-network metrics (87 nodes each).}
+\label{tab:topic_metrics}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.6\textwidth]{../figures/cross_topic_ari.png}
+\caption{Adjusted Rand Index between each topic's community structure
+and the overall network's community structure.}
+\label{fig:ari}
+\end{figure}
+
+\subsection{Opinion Bridges}
+
+To identify respondents who structurally connect otherwise separate
+opinion communities, betweenness centrality was computed for every node,
+and the community diversity of each top-scoring node's immediate
+neighborhood was examined (Table~\ref{tab:bridges}).
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+Respondent & Betweenness Centrality & Own Community & Neighbor Communities Spanned \\
+\midrule
+81 & 0.083 & 16 & 5 \\
+35 & 0.090 & 12 & 3 \\
+90 & 0.062 & 12 & 4 \\
+55 & 0.074 & 18 & 3 \\
+121 & 0.083 & 0 & 2 \\
+\bottomrule
+\end{tabular}
+\caption{Top opinion-bridge respondents by betweenness centrality.}
+\label{tab:bridges}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.75\textwidth]{../figures/opinion_bridges.png}
+\caption{Opinion bridges (red-ringed nodes) overlaid on the overall network.}
+\label{fig:bridges}
+\end{figure}
+
+\subsection{Community Opinion Archetypes}
+
+For every community with at least 4 members, the average deviation from
+the class-wide opinion score was computed per topic, producing
+interpretable ``opinion archetypes'' for each cluster
+(Figure~\ref{fig:archetypes}).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.85\textwidth]{../figures/community_opinion_profiles.png}
+\caption{Opinion archetypes: deviation of each major community from the
+class-wide average, by topic.}
+\label{fig:archetypes}
+\end{figure}
+
+\todo{KRIS: insert item-network figures and metrics here (which
+survey questions cluster together).}
+
+\todo{PRATHISH (Statistical Validation): insert null-model validation figures here (e.g.
+histogram of null-model modularity scores with observed modularity
+marked, significance test results).}
+
+% =====================================================================
+\section{Results and Discussion}
+\label{sec:results}
+
+\subsection{Person-Opinion Network (this workstream)}
+
+The overall opinion network fragments into approximately 25 Louvain
+communities at a modularity of 0.578, indicating that class opinion is
+organized into many small, fine-grained groups rather than 2--3 broad
+ideological camps.
+
+Comparing topic-specific community structure to the overall network via
+Adjusted Rand Index shows that \textbf{Education} (ARI = 0.181) and
+\textbf{Technology} (ARI = 0.101) opinions are the strongest predictors
+of a respondent's overall opinion-community membership, while
+\textbf{Ethics/Society} (ARI = 0.023) and \textbf{Environment}
+(ARI = 0.030) opinions are essentially uncorrelated with overall
+clustering. This suggests that ethics and environmental questions attract
+broad, cross-cutting agreement or disagreement that does not track the
+same social groupings visible in tech/education opinions.
+
+The bridge analysis further shows that the network's cohesion depends on
+a small number of specific individuals rather than broad consensus:
+respondent 81's immediate neighbors span 5 distinct communities, more
+than any other node, making this respondent (and the four others in
+Table~\ref{tab:bridges}) structurally critical to keeping otherwise
+separate opinion groups connected.
+
+The community opinion archetypes reveal clearly interpretable clusters:
+for example, community 0 (9 members) scores well below the class average
+on both Ethics/Society and Environment items -- a coherent ``skeptic''
+archetype -- while community 16 (6 members) scores above average on every
+topic, representing a small ``strong-consensus'' cluster.
+
+\todo{KRIS: discuss item-network findings here -- which opinion
+dimensions/clusters of questions emerged, and how they relate to the
+person-network findings above.}
+
+\todo{PRATHISH (Statistical Validation): discuss null-model validation findings here -- is the
+observed community structure statistically significant compared to
+random graphs of the same size/density? Does this justify $k=8$ as a
+sparsification parameter?}
+
+\subsection{Overall Synthesis}
+\todo{ALL: once each subsection above is written, add 1 short paragraph
+tying the three analyses together -- what does the combination of the
+person-network, item-network, and statistical validation tell us about
+how this class thinks, collectively?}
+
+% =====================================================================
+\section{Individual Contribution}
+\label{sec:contribution}
+
+\begin{itemize}
+    \item \textbf{Shreem Shukla}: Cleaned and pre-processed the raw
+    survey data (missing-value handling, dropping incomplete responses,
+    Likert-to-numeric encoding); built the full person-opinion network
+    construction pipeline (Pearson similarity, mutual $k$-NN graph
+    construction, Louvain community detection, degree/betweenness/
+    eigenvector centrality); performed the cross-topic ARI comparison,
+    the opinion-bridge analysis, and the community opinion-archetype
+    analysis. Wrote the Pipeline Followed section, the data-cleaning
+    portion of Dataset Documentation, and this report skeleton.
+    \item \textbf{Kris Jain}: \todo{fill in -- e.g. "Documented
+    and described the dataset (built on the cleaning pipeline above),
+    added descriptive statistics and distribution analysis; built the
+    item-item opinion network identifying clusters of related survey
+    questions; wrote the remainder of Dataset Documentation."}
+    \item \textbf{Prathish Ghosh}: \todo{fill in -- e.g.
+    "Designed and ran null-model statistical validation of network
+    community structure; performed sensitivity analysis across k values;
+    contributed to Results and Discussion."}
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,54 @@
+{
+  "overall": {
+    "n_nodes": 87,
+    "n_edges": 134,
+    "density": 0.03581929965249933,
+    "avg_clustering": 0.15665001554262561,
+    "avg_path_length_largest_cc": 3.861072261072261,
+    "diameter_largest_cc": 9,
+    "n_components": 18,
+    "largest_cc_size": 66
+  },
+  "by_topic": {
+    "Technology": {
+      "n_nodes": 87,
+      "n_edges": 201,
+      "density": 0.053728949478749,
+      "avg_clustering": 0.16519881010377266,
+      "avg_path_length_largest_cc": 3.7350195724179462,
+      "diameter_largest_cc": 8,
+      "n_components": 5,
+      "largest_cc_size": 82
+    },
+    "Education": {
+      "n_nodes": 87,
+      "n_edges": 176,
+      "density": 0.047046244319700614,
+      "avg_clustering": 0.1995785430349348,
+      "avg_path_length_largest_cc": 3.946835443037975,
+      "diameter_largest_cc": 8,
+      "n_components": 7,
+      "largest_cc_size": 80
+    },
+    "Ethics_Society": {
+      "n_nodes": 87,
+      "n_edges": 227,
+      "density": 0.060678962844159315,
+      "avg_clustering": 0.1811359698571803,
+      "avg_path_length_largest_cc": 3.251543209876543,
+      "diameter_largest_cc": 6,
+      "n_components": 7,
+      "largest_cc_size": 81
+    },
+    "Environment": {
+      "n_nodes": 87,
+      "n_edges": 193,
+      "density": 0.051590483827853514,
+      "avg_clustering": 0.13518963182439517,
+      "avg_path_length_largest_cc": 3.285614035087719,
+      "diameter_largest_cc": 7,
+      "n_components": 12,
+      "largest_cc_size": 76
+    }
+  }
+}
