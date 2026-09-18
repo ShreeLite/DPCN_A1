@@ -1,0 +1,488 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key id="d1" for="edge" attr.name="weight" attr.type="double" />
+  <key id="d0" for="graph" attr.name="name" attr.type="string" />
+  <graph edgedefault="undirected">
+    <node id="T01. Artificial Intelligence will improve society more than it will create problems." />
+    <node id="T02. Generative AI tools should be allowed as learning aids in higher education." />
+    <node id="T03. Students should disclose the use of AI in assignments and reports." />
+    <node id="T04. Every engineering student should receive formal education in AI." />
+    <node id="T05. Artificial Intelligence will significantly accelerate scientific discovery." />
+    <node id="T06. Most repetitive jobs will eventually be replaced by intelligent automation." />
+    <node id="T07. Robots should replace humans in hazardous occupations whenever possible." />
+    <node id="T08. AI-assisted diagnosis should become routine in healthcare." />
+    <node id="T09. Autonomous vehicles will ultimately make transportation safer." />
+    <node id="T10. Protection of personal data is more important than technological convenience." />
+    <node id="T11. Technology companies should explain how recommendation algorithms work." />
+    <node id="T12. Governments should introduce stricter regulations for Artificial Intelligence." />
+    <node id="T13. Cybersecurity deserves greater investment than the development of new digital technologies." />
+    <node id="T14. Social media algorithms contribute to opinion polarization." />
+    <node id="T15. Society will increasingly depend on AI-assisted decision making." />
+    <node id="E01. Project-based learning develops deeper understanding than examination-oriented learning." />
+    <node id="E02. Traditional written examinations accurately measure a student's knowledge." />
+    <node id="E03. Class attendance should be compulsory for all courses." />
+    <node id="E04. High-quality online learning can effectively complement classroom teaching." />
+    <node id="E05. Students should be encouraged to take courses outside their primary discipline." />
+    <node id="E06. Every undergraduate student should participate in at least one research project." />
+    <node id="E07. Publishing research before graduation should be encouraged, but not mandatory." />
+    <node id="E08. Maintaining academic honesty is more important than obtaining high grades." />
+    <node id="E09. Collaborative learning is generally more effective than individual learning." />
+    <node id="E10. Universities should prioritize innovation and problem-solving over rote learning." />
+    <node id="E11. University curricula should be updated more frequently to match emerging technologies." />
+    <node id="E12. Artificial intelligence should be integrated into teaching and personalized learning." />
+    <node id="E13. Universities should invest more resources in research than in expanding infrastructure." />
+    <node id="E14. Strong collaborations between universities and industry improve student education." />
+    <node id="E15. Continuous learning and skill development are essential throughout one's career." />
+    <node id="S01. Every individual has a responsibility to contribute positively to society." />
+    <node id="S02. Universities should encourage students to participate in community service activities." />
+    <node id="S03. New technologies should be evaluated for their societal impact before widespread deployment." />
+    <node id="S04. Technology companies should be accountable for unethical use of their platforms." />
+    <node id="S05. Individuals should have greater control over how their personal data are collected and used." />
+    <node id="S06. Combating online misinformation requires shared responsibility among users, platforms, and governments." />
+    <node id="S07. Equal opportunities should be prioritized regardless of a person's background." />
+    <node id="S08. Diverse teams generally make better decisions than homogeneous teams." />
+    <node id="S09. Universities should promote an inclusive environment where different viewpoints can be discussed respectfully." />
+    <node id="S10. Scientific evidence should play an important role in public policy decisions." />
+    <node id="S11. People should be free to express differing opinions as long as they do not promote harm or discrimination." />
+    <node id="S12. Young people should actively participate in addressing societal challenges." />
+    <node id="S13. Critical evaluation of online information should be taught as a core educational skill." />
+    <node id="S14. Leaders should prioritize ethical decision-making even when it reduces short-term gains." />
+    <node id="S15. Building public trust is essential for responsible adoption of emerging technologies." />
+    <node id="V01. Climate change requires immediate global action." />
+    <node id="V02. Governments should prioritize investment in renewable energy over fossil fuels." />
+    <node id="V03. Individuals should actively reduce their personal energy consumption." />
+    <node id="V04. Public transportation and non-motorized transport should be promoted even if they require additional public investment." />
+    <node id="V05. Single-use plastics should be significantly restricted." />
+    <node id="V06. Water conservation should be a priority in households, institutions, and industries." />
+    <node id="V07. Protecting biodiversity is essential for long-term human well-being." />
+    <node id="V08. Universities should adopt environmentally sustainable campus practices even if implementation costs increase." />
+    <node id="V09. Products should be designed to encourage reuse, repair, and recycling." />
+    <node id="V10. Consumers should consider environmental impact when purchasing products." />
+    <node id="V11. Technological innovation is essential for addressing environmental challenges." />
+    <node id="V12. Environmental sustainability should be integrated into higher education curricula." />
+    <node id="V13. Companies should be held accountable for the environmental impacts of their activities." />
+    <node id="V14. International cooperation is necessary to effectively address environmental challenges." />
+    <node id="V15. Current generations have a responsibility to protect natural resources for future generations." />
+    <edge source="T01. Artificial Intelligence will improve society more than it will create problems." target="T02. Generative AI tools should be allowed as learning aids in higher education.">
+      <data key="d1">0.33748222630877045</data>
+    </edge>
+    <edge source="T01. Artificial Intelligence will improve society more than it will create problems." target="T05. Artificial Intelligence will significantly accelerate scientific discovery.">
+      <data key="d1">0.25545159903850667</data>
+    </edge>
+    <edge source="T01. Artificial Intelligence will improve society more than it will create problems." target="T07. Robots should replace humans in hazardous occupations whenever possible.">
+      <data key="d1">0.2557853649145478</data>
+    </edge>
+    <edge source="T01. Artificial Intelligence will improve society more than it will create problems." target="T08. AI-assisted diagnosis should become routine in healthcare.">
+      <data key="d1">0.18421493221187313</data>
+    </edge>
+    <edge source="T01. Artificial Intelligence will improve society more than it will create problems." target="E02. Traditional written examinations accurately measure a student's knowledge.">
+      <data key="d1">0.14348470770317606</data>
+    </edge>
+    <edge source="T02. Generative AI tools should be allowed as learning aids in higher education." target="T04. Every engineering student should receive formal education in AI.">
+      <data key="d1">0.3087097342937452</data>
+    </edge>
+    <edge source="T02. Generative AI tools should be allowed as learning aids in higher education." target="E12. Artificial intelligence should be integrated into teaching and personalized learning.">
+      <data key="d1">0.5312786652887106</data>
+    </edge>
+    <edge source="T03. Students should disclose the use of AI in assignments and reports." target="E11. University curricula should be updated more frequently to match emerging technologies.">
+      <data key="d1">0.43188381723170605</data>
+    </edge>
+    <edge source="T04. Every engineering student should receive formal education in AI." target="T14. Social media algorithms contribute to opinion polarization.">
+      <data key="d1">0.30901144161161415</data>
+    </edge>
+    <edge source="T04. Every engineering student should receive formal education in AI." target="E12. Artificial intelligence should be integrated into teaching and personalized learning.">
+      <data key="d1">0.3342244157042331</data>
+    </edge>
+    <edge source="T04. Every engineering student should receive formal education in AI." target="E14. Strong collaborations between universities and industry improve student education.">
+      <data key="d1">0.3627877751158231</data>
+    </edge>
+    <edge source="T05. Artificial Intelligence will significantly accelerate scientific discovery." target="T07. Robots should replace humans in hazardous occupations whenever possible.">
+      <data key="d1">0.2854474482762379</data>
+    </edge>
+    <edge source="T05. Artificial Intelligence will significantly accelerate scientific discovery." target="T08. AI-assisted diagnosis should become routine in healthcare.">
+      <data key="d1">0.2515636986222428</data>
+    </edge>
+    <edge source="T05. Artificial Intelligence will significantly accelerate scientific discovery." target="S11. People should be free to express differing opinions as long as they do not promote harm or discrimination.">
+      <data key="d1">0.35786969896829335</data>
+    </edge>
+    <edge source="T06. Most repetitive jobs will eventually be replaced by intelligent automation." target="S04. Technology companies should be accountable for unethical use of their platforms.">
+      <data key="d1">0.3583747095324005</data>
+    </edge>
+    <edge source="T06. Most repetitive jobs will eventually be replaced by intelligent automation." target="E10. Universities should prioritize innovation and problem-solving over rote learning.">
+      <data key="d1">0.44021135857064336</data>
+    </edge>
+    <edge source="T06. Most repetitive jobs will eventually be replaced by intelligent automation." target="E12. Artificial intelligence should be integrated into teaching and personalized learning.">
+      <data key="d1">0.45830657261980307</data>
+    </edge>
+    <edge source="T06. Most repetitive jobs will eventually be replaced by intelligent automation." target="E14. Strong collaborations between universities and industry improve student education.">
+      <data key="d1">0.4964498140708578</data>
+    </edge>
+    <edge source="T07. Robots should replace humans in hazardous occupations whenever possible." target="V01. Climate change requires immediate global action.">
+      <data key="d1">0.4502745504304789</data>
+    </edge>
+    <edge source="T08. AI-assisted diagnosis should become routine in healthcare." target="T09. Autonomous vehicles will ultimately make transportation safer.">
+      <data key="d1">0.24858947614954607</data>
+    </edge>
+    <edge source="T08. AI-assisted diagnosis should become routine in healthcare." target="E02. Traditional written examinations accurately measure a student's knowledge.">
+      <data key="d1">0.19922158764939013</data>
+    </edge>
+    <edge source="T08. AI-assisted diagnosis should become routine in healthcare." target="E13. Universities should invest more resources in research than in expanding infrastructure.">
+      <data key="d1">0.188068113838016</data>
+    </edge>
+    <edge source="T09. Autonomous vehicles will ultimately make transportation safer." target="S08. Diverse teams generally make better decisions than homogeneous teams.">
+      <data key="d1">0.243832796951255</data>
+    </edge>
+    <edge source="T10. Protection of personal data is more important than technological convenience." target="S05. Individuals should have greater control over how their personal data are collected and used.">
+      <data key="d1">0.4638673879654644</data>
+    </edge>
+    <edge source="T10. Protection of personal data is more important than technological convenience." target="T11. Technology companies should explain how recommendation algorithms work.">
+      <data key="d1">0.2867957845075778</data>
+    </edge>
+    <edge source="T10. Protection of personal data is more important than technological convenience." target="T12. Governments should introduce stricter regulations for Artificial Intelligence.">
+      <data key="d1">0.4467995603548301</data>
+    </edge>
+    <edge source="T10. Protection of personal data is more important than technological convenience." target="T14. Social media algorithms contribute to opinion polarization.">
+      <data key="d1">0.3062988064486857</data>
+    </edge>
+    <edge source="T10. Protection of personal data is more important than technological convenience." target="E09. Collaborative learning is generally more effective than individual learning.">
+      <data key="d1">0.2614075316062006</data>
+    </edge>
+    <edge source="T11. Technology companies should explain how recommendation algorithms work." target="S05. Individuals should have greater control over how their personal data are collected and used.">
+      <data key="d1">0.31283687195759846</data>
+    </edge>
+    <edge source="T11. Technology companies should explain how recommendation algorithms work." target="S10. Scientific evidence should play an important role in public policy decisions.">
+      <data key="d1">0.3606055815861618</data>
+    </edge>
+    <edge source="T11. Technology companies should explain how recommendation algorithms work." target="S14. Leaders should prioritize ethical decision-making even when it reduces short-term gains.">
+      <data key="d1">0.4180028954428514</data>
+    </edge>
+    <edge source="T12. Governments should introduce stricter regulations for Artificial Intelligence." target="S05. Individuals should have greater control over how their personal data are collected and used.">
+      <data key="d1">0.3867809741273139</data>
+    </edge>
+    <edge source="T12. Governments should introduce stricter regulations for Artificial Intelligence." target="S13. Critical evaluation of online information should be taught as a core educational skill.">
+      <data key="d1">0.4121318458981093</data>
+    </edge>
+    <edge source="T12. Governments should introduce stricter regulations for Artificial Intelligence." target="T14. Social media algorithms contribute to opinion polarization.">
+      <data key="d1">0.3653263243099722</data>
+    </edge>
+    <edge source="T12. Governments should introduce stricter regulations for Artificial Intelligence." target="T13. Cybersecurity deserves greater investment than the development of new digital technologies.">
+      <data key="d1">0.46453824547414724</data>
+    </edge>
+    <edge source="T14. Social media algorithms contribute to opinion polarization." target="V02. Governments should prioritize investment in renewable energy over fossil fuels.">
+      <data key="d1">0.4457908110360434</data>
+    </edge>
+    <edge source="E01. Project-based learning develops deeper understanding than examination-oriented learning." target="E05. Students should be encouraged to take courses outside their primary discipline.">
+      <data key="d1">0.3916401810066059</data>
+    </edge>
+    <edge source="E01. Project-based learning develops deeper understanding than examination-oriented learning." target="E09. Collaborative learning is generally more effective than individual learning.">
+      <data key="d1">0.4282345155332579</data>
+    </edge>
+    <edge source="E02. Traditional written examinations accurately measure a student's knowledge." target="E03. Class attendance should be compulsory for all courses.">
+      <data key="d1">0.28462475159645734</data>
+    </edge>
+    <edge source="E05. Students should be encouraged to take courses outside their primary discipline." target="E06. Every undergraduate student should participate in at least one research project.">
+      <data key="d1">0.34170353903209877</data>
+    </edge>
+    <edge source="E06. Every undergraduate student should participate in at least one research project." target="S10. Scientific evidence should play an important role in public policy decisions.">
+      <data key="d1">0.33303698175994884</data>
+    </edge>
+    <edge source="E06. Every undergraduate student should participate in at least one research project." target="E13. Universities should invest more resources in research than in expanding infrastructure.">
+      <data key="d1">0.2239228306376775</data>
+    </edge>
+    <edge source="E07. Publishing research before graduation should be encouraged, but not mandatory." target="S06. Combating online misinformation requires shared responsibility among users, platforms, and governments.">
+      <data key="d1">0.4175767295816572</data>
+    </edge>
+    <edge source="E07. Publishing research before graduation should be encouraged, but not mandatory." target="E12. Artificial intelligence should be integrated into teaching and personalized learning.">
+      <data key="d1">0.3880882108108542</data>
+    </edge>
+    <edge source="E07. Publishing research before graduation should be encouraged, but not mandatory." target="S11. People should be free to express differing opinions as long as they do not promote harm or discrimination.">
+      <data key="d1">0.4271859106797697</data>
+    </edge>
+    <edge source="E07. Publishing research before graduation should be encouraged, but not mandatory." target="V07. Protecting biodiversity is essential for long-term human well-being.">
+      <data key="d1">0.4632087618036989</data>
+    </edge>
+    <edge source="E07. Publishing research before graduation should be encouraged, but not mandatory." target="V08. Universities should adopt environmentally sustainable campus practices even if implementation costs increase.">
+      <data key="d1">0.4124605942814945</data>
+    </edge>
+    <edge source="E07. Publishing research before graduation should be encouraged, but not mandatory." target="E10. Universities should prioritize innovation and problem-solving over rote learning.">
+      <data key="d1">0.5186378916640435</data>
+    </edge>
+    <edge source="E07. Publishing research before graduation should be encouraged, but not mandatory." target="E14. Strong collaborations between universities and industry improve student education.">
+      <data key="d1">0.42942089398777694</data>
+    </edge>
+    <edge source="E09. Collaborative learning is generally more effective than individual learning." target="S08. Diverse teams generally make better decisions than homogeneous teams.">
+      <data key="d1">0.2881487284914526</data>
+    </edge>
+    <edge source="E09. Collaborative learning is generally more effective than individual learning." target="E13. Universities should invest more resources in research than in expanding infrastructure.">
+      <data key="d1">0.2709816539366864</data>
+    </edge>
+    <edge source="E09. Collaborative learning is generally more effective than individual learning." target="S02. Universities should encourage students to participate in community service activities.">
+      <data key="d1">0.34126426101142293</data>
+    </edge>
+    <edge source="E10. Universities should prioritize innovation and problem-solving over rote learning." target="S06. Combating online misinformation requires shared responsibility among users, platforms, and governments.">
+      <data key="d1">0.514689082997274</data>
+    </edge>
+    <edge source="E10. Universities should prioritize innovation and problem-solving over rote learning." target="V09. Products should be designed to encourage reuse, repair, and recycling.">
+      <data key="d1">0.4614923731568586</data>
+    </edge>
+    <edge source="E10. Universities should prioritize innovation and problem-solving over rote learning." target="V13. Companies should be held accountable for the environmental impacts of their activities.">
+      <data key="d1">0.4236583417989075</data>
+    </edge>
+    <edge source="E10. Universities should prioritize innovation and problem-solving over rote learning." target="E12. Artificial intelligence should be integrated into teaching and personalized learning.">
+      <data key="d1">0.4398037313220629</data>
+    </edge>
+    <edge source="E10. Universities should prioritize innovation and problem-solving over rote learning." target="E14. Strong collaborations between universities and industry improve student education.">
+      <data key="d1">0.47214561500275787</data>
+    </edge>
+    <edge source="E10. Universities should prioritize innovation and problem-solving over rote learning." target="E15. Continuous learning and skill development are essential throughout one's career.">
+      <data key="d1">0.4715282267485893</data>
+    </edge>
+    <edge source="E11. University curricula should be updated more frequently to match emerging technologies." target="S11. People should be free to express differing opinions as long as they do not promote harm or discrimination.">
+      <data key="d1">0.3702799224999442</data>
+    </edge>
+    <edge source="E11. University curricula should be updated more frequently to match emerging technologies." target="V07. Protecting biodiversity is essential for long-term human well-being.">
+      <data key="d1">0.525109249123747</data>
+    </edge>
+    <edge source="E11. University curricula should be updated more frequently to match emerging technologies." target="V08. Universities should adopt environmentally sustainable campus practices even if implementation costs increase.">
+      <data key="d1">0.40625081051372225</data>
+    </edge>
+    <edge source="E11. University curricula should be updated more frequently to match emerging technologies." target="E12. Artificial intelligence should be integrated into teaching and personalized learning.">
+      <data key="d1">0.3509796959767785</data>
+    </edge>
+    <edge source="E11. University curricula should be updated more frequently to match emerging technologies." target="E15. Continuous learning and skill development are essential throughout one's career.">
+      <data key="d1">0.4199126809727567</data>
+    </edge>
+    <edge source="E12. Artificial intelligence should be integrated into teaching and personalized learning." target="E14. Strong collaborations between universities and industry improve student education.">
+      <data key="d1">0.43980373132206285</data>
+    </edge>
+    <edge source="E14. Strong collaborations between universities and industry improve student education." target="V09. Products should be designed to encourage reuse, repair, and recycling.">
+      <data key="d1">0.4519770664938307</data>
+    </edge>
+    <edge source="E14. Strong collaborations between universities and industry improve student education." target="E15. Continuous learning and skill development are essential throughout one's career.">
+      <data key="d1">0.6041812767958884</data>
+    </edge>
+    <edge source="E15. Continuous learning and skill development are essential throughout one's career." target="S07. Equal opportunities should be prioritized regardless of a person's background.">
+      <data key="d1">0.43361423171059943</data>
+    </edge>
+    <edge source="E15. Continuous learning and skill development are essential throughout one's career." target="V14. International cooperation is necessary to effectively address environmental challenges.">
+      <data key="d1">0.4078036466998445</data>
+    </edge>
+    <edge source="E15. Continuous learning and skill development are essential throughout one's career." target="V15. Current generations have a responsibility to protect natural resources for future generations.">
+      <data key="d1">0.37655051548729807</data>
+    </edge>
+    <edge source="S01. Every individual has a responsibility to contribute positively to society." target="S03. New technologies should be evaluated for their societal impact before widespread deployment.">
+      <data key="d1">0.5453792936129627</data>
+    </edge>
+    <edge source="S01. Every individual has a responsibility to contribute positively to society." target="S08. Diverse teams generally make better decisions than homogeneous teams.">
+      <data key="d1">0.29687356062240067</data>
+    </edge>
+    <edge source="S01. Every individual has a responsibility to contribute positively to society." target="S14. Leaders should prioritize ethical decision-making even when it reduces short-term gains.">
+      <data key="d1">0.44619056664011847</data>
+    </edge>
+    <edge source="S02. Universities should encourage students to participate in community service activities." target="S04. Technology companies should be accountable for unethical use of their platforms.">
+      <data key="d1">0.3888556770179313</data>
+    </edge>
+    <edge source="S02. Universities should encourage students to participate in community service activities." target="S12. Young people should actively participate in addressing societal challenges.">
+      <data key="d1">0.3362936457070594</data>
+    </edge>
+    <edge source="S02. Universities should encourage students to participate in community service activities." target="S15. Building public trust is essential for responsible adoption of emerging technologies.">
+      <data key="d1">0.3986391190838022</data>
+    </edge>
+    <edge source="S02. Universities should encourage students to participate in community service activities." target="V10. Consumers should consider environmental impact when purchasing products.">
+      <data key="d1">0.41873268293690025</data>
+    </edge>
+    <edge source="S03. New technologies should be evaluated for their societal impact before widespread deployment." target="S13. Critical evaluation of online information should be taught as a core educational skill.">
+      <data key="d1">0.3688705142368026</data>
+    </edge>
+    <edge source="S03. New technologies should be evaluated for their societal impact before widespread deployment." target="V03. Individuals should actively reduce their personal energy consumption.">
+      <data key="d1">0.36054109815481483</data>
+    </edge>
+    <edge source="S03. New technologies should be evaluated for their societal impact before widespread deployment." target="V11. Technological innovation is essential for addressing environmental challenges.">
+      <data key="d1">0.35042090975921775</data>
+    </edge>
+    <edge source="S04. Technology companies should be accountable for unethical use of their platforms." target="S14. Leaders should prioritize ethical decision-making even when it reduces short-term gains.">
+      <data key="d1">0.41020617039894625</data>
+    </edge>
+    <edge source="S04. Technology companies should be accountable for unethical use of their platforms." target="V05. Single-use plastics should be significantly restricted.">
+      <data key="d1">0.37644975910993167</data>
+    </edge>
+    <edge source="S06. Combating online misinformation requires shared responsibility among users, platforms, and governments." target="S09. Universities should promote an inclusive environment where different viewpoints can be discussed respectfully.">
+      <data key="d1">0.49166995685132175</data>
+    </edge>
+    <edge source="S06. Combating online misinformation requires shared responsibility among users, platforms, and governments." target="V02. Governments should prioritize investment in renewable energy over fossil fuels.">
+      <data key="d1">0.40032867857308785</data>
+    </edge>
+    <edge source="S06. Combating online misinformation requires shared responsibility among users, platforms, and governments." target="V05. Single-use plastics should be significantly restricted.">
+      <data key="d1">0.4396100905710151</data>
+    </edge>
+    <edge source="S06. Combating online misinformation requires shared responsibility among users, platforms, and governments." target="V10. Consumers should consider environmental impact when purchasing products.">
+      <data key="d1">0.49896640217387855</data>
+    </edge>
+    <edge source="S06. Combating online misinformation requires shared responsibility among users, platforms, and governments." target="V11. Technological innovation is essential for addressing environmental challenges.">
+      <data key="d1">0.4204772100764554</data>
+    </edge>
+    <edge source="S07. Equal opportunities should be prioritized regardless of a person's background." target="S09. Universities should promote an inclusive environment where different viewpoints can be discussed respectfully.">
+      <data key="d1">0.49260132787831734</data>
+    </edge>
+    <edge source="S07. Equal opportunities should be prioritized regardless of a person's background." target="S15. Building public trust is essential for responsible adoption of emerging technologies.">
+      <data key="d1">0.39260029091814513</data>
+    </edge>
+    <edge source="S07. Equal opportunities should be prioritized regardless of a person's background." target="V02. Governments should prioritize investment in renewable energy over fossil fuels.">
+      <data key="d1">0.4650439452145591</data>
+    </edge>
+    <edge source="S07. Equal opportunities should be prioritized regardless of a person's background." target="V04. Public transportation and non-motorized transport should be promoted even if they require additional public investment.">
+      <data key="d1">0.3851311602943527</data>
+    </edge>
+    <edge source="S07. Equal opportunities should be prioritized regardless of a person's background." target="V14. International cooperation is necessary to effectively address environmental challenges.">
+      <data key="d1">0.40928911697850473</data>
+    </edge>
+    <edge source="S09. Universities should promote an inclusive environment where different viewpoints can be discussed respectfully." target="S11. People should be free to express differing opinions as long as they do not promote harm or discrimination.">
+      <data key="d1">0.4422781141831204</data>
+    </edge>
+    <edge source="S09. Universities should promote an inclusive environment where different viewpoints can be discussed respectfully." target="S13. Critical evaluation of online information should be taught as a core educational skill.">
+      <data key="d1">0.4192149440137289</data>
+    </edge>
+    <edge source="S09. Universities should promote an inclusive environment where different viewpoints can be discussed respectfully." target="S14. Leaders should prioritize ethical decision-making even when it reduces short-term gains.">
+      <data key="d1">0.5199026064833333</data>
+    </edge>
+    <edge source="S09. Universities should promote an inclusive environment where different viewpoints can be discussed respectfully." target="V03. Individuals should actively reduce their personal energy consumption.">
+      <data key="d1">0.42255066523336515</data>
+    </edge>
+    <edge source="S09. Universities should promote an inclusive environment where different viewpoints can be discussed respectfully." target="V09. Products should be designed to encourage reuse, repair, and recycling.">
+      <data key="d1">0.4271423824770455</data>
+    </edge>
+    <edge source="S09. Universities should promote an inclusive environment where different viewpoints can be discussed respectfully." target="V14. International cooperation is necessary to effectively address environmental challenges.">
+      <data key="d1">0.419907635898865</data>
+    </edge>
+    <edge source="S10. Scientific evidence should play an important role in public policy decisions." target="S12. Young people should actively participate in addressing societal challenges.">
+      <data key="d1">0.42693119449415406</data>
+    </edge>
+    <edge source="S10. Scientific evidence should play an important role in public policy decisions." target="S13. Critical evaluation of online information should be taught as a core educational skill.">
+      <data key="d1">0.36092195635042096</data>
+    </edge>
+    <edge source="S10. Scientific evidence should play an important role in public policy decisions." target="V08. Universities should adopt environmentally sustainable campus practices even if implementation costs increase.">
+      <data key="d1">0.4284564083720487</data>
+    </edge>
+    <edge source="S10. Scientific evidence should play an important role in public policy decisions." target="V11. Technological innovation is essential for addressing environmental challenges.">
+      <data key="d1">0.3966766462384378</data>
+    </edge>
+    <edge source="S10. Scientific evidence should play an important role in public policy decisions." target="V15. Current generations have a responsibility to protect natural resources for future generations.">
+      <data key="d1">0.4327087796210395</data>
+    </edge>
+    <edge source="S11. People should be free to express differing opinions as long as they do not promote harm or discrimination." target="V06. Water conservation should be a priority in households, institutions, and industries.">
+      <data key="d1">0.42812079119788565</data>
+    </edge>
+    <edge source="S12. Young people should actively participate in addressing societal challenges." target="V07. Protecting biodiversity is essential for long-term human well-being.">
+      <data key="d1">0.3969656830473235</data>
+    </edge>
+    <edge source="S13. Critical evaluation of online information should be taught as a core educational skill." target="S14. Leaders should prioritize ethical decision-making even when it reduces short-term gains.">
+      <data key="d1">0.41683929422533733</data>
+    </edge>
+    <edge source="S13. Critical evaluation of online information should be taught as a core educational skill." target="S15. Building public trust is essential for responsible adoption of emerging technologies.">
+      <data key="d1">0.39465917394834776</data>
+    </edge>
+    <edge source="S13. Critical evaluation of online information should be taught as a core educational skill." target="V03. Individuals should actively reduce their personal energy consumption.">
+      <data key="d1">0.4515210924537271</data>
+    </edge>
+    <edge source="S13. Critical evaluation of online information should be taught as a core educational skill." target="V10. Consumers should consider environmental impact when purchasing products.">
+      <data key="d1">0.510186941524924</data>
+    </edge>
+    <edge source="S14. Leaders should prioritize ethical decision-making even when it reduces short-term gains." target="V09. Products should be designed to encourage reuse, repair, and recycling.">
+      <data key="d1">0.4747128687185358</data>
+    </edge>
+    <edge source="S14. Leaders should prioritize ethical decision-making even when it reduces short-term gains." target="V13. Companies should be held accountable for the environmental impacts of their activities.">
+      <data key="d1">0.5399435313046277</data>
+    </edge>
+    <edge source="S15. Building public trust is essential for responsible adoption of emerging technologies." target="V02. Governments should prioritize investment in renewable energy over fossil fuels.">
+      <data key="d1">0.4330217572436072</data>
+    </edge>
+    <edge source="S15. Building public trust is essential for responsible adoption of emerging technologies." target="V10. Consumers should consider environmental impact when purchasing products.">
+      <data key="d1">0.4570869013166472</data>
+    </edge>
+    <edge source="S15. Building public trust is essential for responsible adoption of emerging technologies." target="V12. Environmental sustainability should be integrated into higher education curricula.">
+      <data key="d1">0.43822024117381947</data>
+    </edge>
+    <edge source="V01. Climate change requires immediate global action." target="V02. Governments should prioritize investment in renewable energy over fossil fuels.">
+      <data key="d1">0.4014472455581094</data>
+    </edge>
+    <edge source="V01. Climate change requires immediate global action." target="V04. Public transportation and non-motorized transport should be promoted even if they require additional public investment.">
+      <data key="d1">0.34913849701800775</data>
+    </edge>
+    <edge source="V01. Climate change requires immediate global action." target="V11. Technological innovation is essential for addressing environmental challenges.">
+      <data key="d1">0.37860195797522594</data>
+    </edge>
+    <edge source="V02. Governments should prioritize investment in renewable energy over fossil fuels." target="V04. Public transportation and non-motorized transport should be promoted even if they require additional public investment.">
+      <data key="d1">0.4050357830277144</data>
+    </edge>
+    <edge source="V03. Individuals should actively reduce their personal energy consumption." target="V04. Public transportation and non-motorized transport should be promoted even if they require additional public investment.">
+      <data key="d1">0.4248190260986087</data>
+    </edge>
+    <edge source="V03. Individuals should actively reduce their personal energy consumption." target="V10. Consumers should consider environmental impact when purchasing products.">
+      <data key="d1">0.4884127540230262</data>
+    </edge>
+    <edge source="V03. Individuals should actively reduce their personal energy consumption." target="V12. Environmental sustainability should be integrated into higher education curricula.">
+      <data key="d1">0.4225373927421333</data>
+    </edge>
+    <edge source="V04. Public transportation and non-motorized transport should be promoted even if they require additional public investment." target="V06. Water conservation should be a priority in households, institutions, and industries.">
+      <data key="d1">0.39350028163272593</data>
+    </edge>
+    <edge source="V05. Single-use plastics should be significantly restricted." target="V06. Water conservation should be a priority in households, institutions, and industries.">
+      <data key="d1">0.3562530548910415</data>
+    </edge>
+    <edge source="V05. Single-use plastics should be significantly restricted." target="V07. Protecting biodiversity is essential for long-term human well-being.">
+      <data key="d1">0.5686265134954462</data>
+    </edge>
+    <edge source="V06. Water conservation should be a priority in households, institutions, and industries." target="V15. Current generations have a responsibility to protect natural resources for future generations.">
+      <data key="d1">0.4183685297662889</data>
+    </edge>
+    <edge source="V07. Protecting biodiversity is essential for long-term human well-being." target="V08. Universities should adopt environmentally sustainable campus practices even if implementation costs increase.">
+      <data key="d1">0.6295631831691062</data>
+    </edge>
+    <edge source="V07. Protecting biodiversity is essential for long-term human well-being." target="V09. Products should be designed to encourage reuse, repair, and recycling.">
+      <data key="d1">0.4853764532235064</data>
+    </edge>
+    <edge source="V07. Protecting biodiversity is essential for long-term human well-being." target="V12. Environmental sustainability should be integrated into higher education curricula.">
+      <data key="d1">0.45752071257782767</data>
+    </edge>
+    <edge source="V07. Protecting biodiversity is essential for long-term human well-being." target="V14. International cooperation is necessary to effectively address environmental challenges.">
+      <data key="d1">0.4795511976129323</data>
+    </edge>
+    <edge source="V08. Universities should adopt environmentally sustainable campus practices even if implementation costs increase." target="V10. Consumers should consider environmental impact when purchasing products.">
+      <data key="d1">0.5994214874488553</data>
+    </edge>
+    <edge source="V08. Universities should adopt environmentally sustainable campus practices even if implementation costs increase." target="V12. Environmental sustainability should be integrated into higher education curricula.">
+      <data key="d1">0.44015048911120963</data>
+    </edge>
+    <edge source="V08. Universities should adopt environmentally sustainable campus practices even if implementation costs increase." target="V13. Companies should be held accountable for the environmental impacts of their activities.">
+      <data key="d1">0.4357804838633068</data>
+    </edge>
+    <edge source="V09. Products should be designed to encourage reuse, repair, and recycling." target="V12. Environmental sustainability should be integrated into higher education curricula.">
+      <data key="d1">0.4388775018395915</data>
+    </edge>
+    <edge source="V09. Products should be designed to encourage reuse, repair, and recycling." target="V14. International cooperation is necessary to effectively address environmental challenges.">
+      <data key="d1">0.5398503733852065</data>
+    </edge>
+    <edge source="V09. Products should be designed to encourage reuse, repair, and recycling." target="V13. Companies should be held accountable for the environmental impacts of their activities.">
+      <data key="d1">0.5282754249077478</data>
+    </edge>
+    <edge source="V10. Consumers should consider environmental impact when purchasing products." target="V12. Environmental sustainability should be integrated into higher education curricula.">
+      <data key="d1">0.5790530829342954</data>
+    </edge>
+    <edge source="V10. Consumers should consider environmental impact when purchasing products." target="V13. Companies should be held accountable for the environmental impacts of their activities.">
+      <data key="d1">0.4627036488325948</data>
+    </edge>
+    <edge source="V12. Environmental sustainability should be integrated into higher education curricula." target="V13. Companies should be held accountable for the environmental impacts of their activities.">
+      <data key="d1">0.4210357099419966</data>
+    </edge>
+    <edge source="V12. Environmental sustainability should be integrated into higher education curricula." target="V14. International cooperation is necessary to effectively address environmental challenges.">
+      <data key="d1">0.43228115442961074</data>
+    </edge>
+    <edge source="V13. Companies should be held accountable for the environmental impacts of their activities." target="V14. International cooperation is necessary to effectively address environmental challenges.">
+      <data key="d1">0.5056538252160735</data>
+    </edge>
+    <edge source="V13. Companies should be held accountable for the environmental impacts of their activities." target="V15. Current generations have a responsibility to protect natural resources for future generations.">
+      <data key="d1">0.44122273150489116</data>
+    </edge>
+    <data key="d0">Item-Opinion Network</data>
+  </graph>
+</graphml>

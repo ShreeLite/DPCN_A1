@@ -9,7 +9,7 @@ pairwise opinion similarity between respondents, and constructing both
 an overall opinion network and four topic-specific sub-networks
 (Technology / Education / Ethics-Society / Environment).
 
-Author: [YOUR NAME] — Network Construction workstream
+Author: Shreem — Network Construction workstream
 """
 
 import pandas as pd
@@ -32,7 +32,7 @@ np.random.seed(RNG_SEED)
 # STEP 1 — LOAD & CLEAN
 # ---------------------------------------------------------------------
 
-RAW_PATH = "/mnt/user-data/uploads/Survey_Results_UC.csv"
+RAW_PATH = "../Survey_Results_UC.csv"
 
 df = pd.read_csv(RAW_PATH)
 df = df.rename(columns={df.columns[0]: "respondent_id"})

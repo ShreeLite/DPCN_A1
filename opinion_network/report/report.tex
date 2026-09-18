@@ -17,7 +17,7 @@
 
 % =====================================================================
 \section*{GitHub Link to Code}
-{https://github.com/ShreeLite/DPCN_A1}
+\url{https://github.com/ShreeLite/DPCN_A1}
 
 % =====================================================================
 \section{Dataset Documentation}
@@ -27,27 +27,113 @@ The data cleaning and encoding pipeline described below was implemented
 as part of the network construction workstream (see \texttt{build\_network.py});
 this section documents and elaborates on that process.
 
-\todo{KRIS: write up the description below (approx. 1 page), and add
-your own new material -- descriptive statistics, distribution plots, a
-note on survey bias, etc. See outputs/encoded\_responses.csv for the
-cleaned data.}
+The raw survey collected responses from 96 students across 60 statements
+on a 5-point Likert scale (Strongly Disagree, Disagree, Neutral, Agree,
+Strongly Agree), evenly split into four topics of 15 items each:
+Technology (prefix \texttt{T}), Education (\texttt{E}), Ethics/Society
+(\texttt{S}), and Environment (\texttt{V}). Before any analysis, the raw
+responses were cleaned in two stages. First, the string ``No Comments''
+was treated as a genuinely missing response rather than a neutral
+(``Neutral'') opinion, since a respondent skipping a question and a
+respondent actively choosing the midpoint of the scale are not the same
+thing. Second, respondents who left more than 50\% of the 60 items blank
+were removed entirely (9 of the original 96 respondents), since a
+profile that is mostly missing cannot be meaningfully placed in an
+opinion network -- this left 87 usable respondents. Any remaining sparse
+gaps (a respondent missing a handful, but not most, of the items) were
+filled with that item's class-average response, a conservative choice
+that avoids manufacturing an artificially strong opinion where none was
+expressed. Finally, the ordinal Likert scale was encoded numerically as
+Strongly Disagree $=-2$, Disagree $=-1$, Neutral $=0$, Agree $=+1$,
+Strongly Agree $=+2$, producing the $87 \times 60$ numeric matrix
+(\texttt{outputs/encoded\_responses.csv}) that both the person-opinion
+and item-opinion networks in this report are built from.
 
-\begin{itemize}
-    \item Describe the raw survey: N respondents, 60 Likert-scale items across
-    4 topics (Technology, Education, Ethics/Society, Environment), 5-point
-    scale (Strongly Disagree -- Strongly Agree).
-    \item Explain missing-data handling: "No Comments" entries were treated as
-    missing responses rather than a neutral opinion. Respondents who left more
-    than 50\% of the survey blank were dropped (9 of 96 respondents removed,
-    leaving 87). Remaining sparse gaps were filled with each item's
-    class-average response.
-    \item Explain the numeric encoding: Strongly Disagree = -2 ... Strongly
-    Agree = +2.
-\end{itemize}
+\subsection*{Descriptive Statistics and Data Exploration}
 
-\todo{KRIS: add your own contribution here -- descriptive statistics
-per topic (mean/spread), distribution plots, a discussion of self-report
-survey bias (social desirability, etc.), or other data exploration.}
+To understand what the cleaned data actually looks like before any
+network is built, Table~\ref{tab:topic_stats} summarizes the encoded
+response distribution for each of the four topics (pooling all 87
+respondents $\times$ 15 items per topic).
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrrrr}
+\toprule
+Topic & Mean & Std.\ Dev. & Median & \% Agree+ & \% Disagree- \\
+\midrule
+Environment     & 1.39 & 0.75 & 2 & 89.7\% & 2.3\%  \\
+Ethics/Society  & 1.28 & 0.83 & 1 & 86.1\% & 3.7\%  \\
+Technology      & 1.00 & 0.99 & 1 & 74.7\% & 8.2\%  \\
+Education       & 0.91 & 1.15 & 1 & 70.4\% & 13.7\% \\
+\bottomrule
+\end{tabular}
+\caption{Per-topic descriptive statistics of the encoded response
+matrix ($-2$ = Strongly Disagree, $+2$ = Strongly Agree). ``\% Agree+''
+and ``\% Disagree$-$'' give the share of all (respondent, item) values
+in that topic that were Agree/Strongly Agree or Disagree/Strongly
+Disagree respectively.}
+\label{tab:topic_stats}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.65\textwidth]{../../dataset_documentation/figures/topic_response_boxplot.png}
+\caption{Distribution of encoded responses by topic. All four topics
+skew positive; Education has the widest spread and the only topic
+whose interquartile range dips to Neutral.}
+\label{fig:topic_boxplot}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.85\textwidth]{../../dataset_documentation/figures/item_mean_distribution.png}
+\caption{Distribution of per-item mean opinion (60 items total),
+faceted by topic. Technology and Environment items are tightly
+concentrated around a single positive mean; Education items are the
+most dispersed, including the only two topic-level items with a
+negative mean.}
+\label{fig:item_mean_dist}
+\end{figure}
+
+Every topic has a positive mean, i.e.\ the class leans toward agreement
+on nearly every statement, but the four topics are not equally
+consensual. Environment and Ethics/Society have both the highest means
+\emph{and} the lowest standard deviations -- around 88\% of all
+responses to these items are Agree or Strongly Agree, and almost nobody
+disagrees. Education has the lowest mean and by far the highest spread
+(std.\ 1.15): the most contested individual items in the entire survey
+are all Education items concerning assessment and attendance policy
+(e.g.\ ``class attendance should be compulsory'', ``online learning can
+effectively complement classroom teaching''), where personal experience
+plausibly differs far more between students than it does for abstract
+ethics or environment statements. The most consensual items, by
+contrast, are broad normative statements (e.g.\ ``continuous learning
+and skill development are essential'', ``companies should be held
+accountable for the environmental impacts of their activities'') that a
+Likert survey rarely gets genuine disagreement on.
+
+\paragraph{A note on self-report survey bias.} This skew toward
+agreement is exactly what we would expect if several well-known biases
+in self-report surveys are present here. \textbf{Social desirability
+bias} means respondents tend to agree with statements framed as
+normatively ``good'' positions -- sustainability, ethics, personal
+responsibility -- regardless of their private attitude, particularly in
+a class survey where responses are not fully anonymous to the
+respondent's peer group. \textbf{Acquiescence bias} (a general tendency
+to agree with whatever is presented) would independently push every
+topic's mean upward, and is consistent with the fact that even the
+least-agreed-with topic (Education) still has a positive mean.
+\textbf{Self-selection} in who chose to complete the survey at all may
+also matter: 9 of 96 respondents were dropped for leaving over half the
+survey blank, and the remaining 87 who engaged with all 60 statements
+may be more opinionated or more agreeable than a true random sample of
+the class. Because of this skew, raw agreement levels should be read
+with caution, and the \emph{relative} structure captured by
+correlation-based similarity -- used throughout both the person-opinion
+network (Section~\ref{sec:pipeline}) and the item-opinion network
+(Section~\ref{sec:item_network}) -- is a more robust signal of real
+opinion differences than absolute response levels are.
 
 % =====================================================================
 \section{Pipeline Followed}
@@ -96,6 +182,25 @@ methodology here (1 short paragraph) -- e.g. ``To assess whether the
 observed community structure is statistically meaningful, modularity
 was compared against a null distribution generated from N random graphs
 matched on node count, edge count, and degree sequence...''}
+
+\subsection{Item-Opinion Network Construction}
+\label{sec:item_network}
+In addition to the person-opinion network above, a second network was
+built with the opposite orientation: nodes are the 60 survey
+\emph{items} rather than the 87 respondents, and an edge reflects
+whether two items were answered similarly across respondents --
+i.e., whether people who agreed strongly with one statement also
+tended to agree strongly with the other. This is the exact transpose of
+the person-network pipeline: Pearson correlation was computed between
+every pair of items' 87-respondent answer vectors (rather than between
+respondents' 60-item vectors), and the resulting $60\times 60$
+correlation matrix was sparsified with the same mutual $k$-Nearest-Neighbours
+procedure ($k=8$) used for the person network, for direct methodological
+comparability. Louvain community detection was then applied to the
+resulting item network, and the discovered communities were compared
+against the survey's own four a-priori topic labels using Adjusted Rand
+Index, to test whether real opinion structure follows the survey's
+topic design or cuts across it.
 
 % =====================================================================
 \section{Analysis and Visualizations}
@@ -214,8 +319,63 @@ class-wide average, by topic.}
 \label{fig:archetypes}
 \end{figure}
 
-\todo{KRIS: insert item-network figures and metrics here (which
-survey questions cluster together).}
+\subsection{Item-Opinion Network}
+\label{sec:item_analysis}
+
+Table~\ref{tab:item_metrics} summarizes the item-opinion network
+constructed in Section~\ref{sec:item_network}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lr}
+\toprule
+Metric & Value \\
+\midrule
+Nodes (survey items) & 60 \\
+Edges & 140 \\
+Density & 0.079 \\
+Average clustering coefficient & 0.107 \\
+Average path length (largest component) & 3.04 \\
+Diameter (largest component) & 7 \\
+Number of connected components & 4 \\
+Largest component size & 57 \\
+Number of Louvain communities & 9 \\
+Modularity & 0.428 \\
+ARI vs.\ a-priori survey topics & 0.143 \\
+\bottomrule
+\end{tabular}
+\caption{Item-opinion network metrics.}
+\label{tab:item_metrics}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.75\textwidth]{../../item_network/figures/item_network_by_community.png}
+\caption{Item-opinion network, nodes colored by Louvain community and
+labeled by item code (e.g.\ T01 = Technology item 1). Node layout is
+identical to Figure~\ref{fig:item_by_topic}.}
+\label{fig:item_by_community}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.75\textwidth]{../../item_network/figures/item_network_by_topic.png}
+\caption{The same item-opinion network and layout as
+Figure~\ref{fig:item_by_community}, but colored by the survey's
+a-priori topic label instead of the discovered community. The visual
+mismatch between the two colorings reflects the low ARI (0.143) between
+them.}
+\label{fig:item_by_topic}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{../../item_network/figures/item_community_topic_heatmap.png}
+\caption{Number of items from each a-priori survey topic contained in
+each discovered Louvain item community. The two largest communities
+each draw items from two different topics rather than one.}
+\label{fig:item_heatmap}
+\end{figure}
 
 \todo{PRATHISH (Statistical Validation): insert null-model validation figures here (e.g.
 histogram of null-model modularity scores with observed modularity
@@ -255,9 +415,46 @@ on both Ethics/Society and Environment items -- a coherent ``skeptic''
 archetype -- while community 16 (6 members) scores above average on every
 topic, representing a small ``strong-consensus'' cluster.
 
-\todo{KRIS: discuss item-network findings here -- which opinion
-dimensions/clusters of questions emerged, and how they relate to the
-person-network findings above.}
+\subsection{Item-Opinion Network (this workstream)}
+
+The item-opinion network is noticeably less cleanly separated than the
+person-opinion network: Louvain finds 9 communities at modularity
+$\approx 0.43$ (versus 25 communities at modularity 0.578 for people),
+and three of those nine are singleton or near-singleton items with
+degree 0--1 -- individual statements that nobody's answer pattern
+strongly tracks. Survey items, in other words, are more weakly and
+diffusely related to one another than respondents are to each other.
+
+More importantly, the item communities do \emph{not} reproduce the
+survey's own four-topic design: ARI between Louvain item communities
+and the a-priori topic labels is only 0.143. Instead of Technology,
+Education, Ethics/Society, and Environment each forming their own
+tight cluster, the two largest communities each blend two nominal
+topics: one groups most Technology and Education items together (a
+``modernization / innovation-attitude'' dimension -- how someone feels
+about AI in the classroom correlates with how they feel about AI in
+society generally), while another groups most Ethics/Society and
+Environment items together (a ``collective responsibility''
+dimension). This is a genuinely different axis of variation than the
+survey's own category labels would suggest.
+
+This finding lines up closely with the person-network results above.
+Recall that Education and Technology opinions were the strongest
+predictors of a respondent's overall community membership (ARI 0.18 and
+0.10), while Ethics/Society and Environment opinions were essentially
+uncorrelated with it (ARI $\approx 0.02$--$0.03$). The item-level
+picture explains \emph{why}: Ethics/Society and Environment items are
+exactly the ones with the highest agreement and lowest spread in the
+descriptive statistics (Table~\ref{tab:topic_stats} -- means of 1.28
+and 1.39 out of 2, with the smallest standard deviations of any topic).
+When almost everyone agrees with an item, that item carries very little
+information about how respondents differ from one another, so it
+cannot drive person-level community structure even though it clusters
+tightly with other similarly-high-consensus items at the item level.
+Technology and Education items, by contrast, have more spread (std.\
+0.99 and 1.15) and therefore more genuine disagreement to organize
+people around -- consistent with them being the topics that best
+predict overall person-community membership.
 
 \todo{PRATHISH (Statistical Validation): discuss null-model validation findings here -- is the
 observed community structure statistically significant compared to
@@ -284,11 +481,18 @@ how this class thinks, collectively?}
     the opinion-bridge analysis, and the community opinion-archetype
     analysis. Wrote the Pipeline Followed section, the data-cleaning
     portion of Dataset Documentation, and this report skeleton.
-    \item \textbf{Kris Jain}: \todo{fill in -- e.g. "Documented
-    and described the dataset (built on the cleaning pipeline above),
-    added descriptive statistics and distribution analysis; built the
-    item-item opinion network identifying clusters of related survey
-    questions; wrote the remainder of Dataset Documentation."}
+    \item \textbf{Kris Jain}: Wrote up and elaborated the Dataset
+    Documentation section (cleaning/encoding narrative, per-topic
+    descriptive statistics, distribution plots, and a discussion of
+    self-report survey bias). Designed and built the item-opinion
+    network (\texttt{item\_network/build\_item\_network.py}): item-item
+    Pearson correlation, mutual $k$-NN graph construction, Louvain
+    community detection, and an Adjusted Rand Index comparison against
+    the survey's a-priori topic labels to test whether real opinion
+    structure follows the survey's own topic design. Produced the
+    item-network figures and metrics table, and wrote the corresponding
+    Item-Opinion Network subsections of Pipeline Followed, Analysis and
+    Visualizations, and Results and Discussion.
     \item \textbf{Prathish Ghosh}: \todo{fill in -- e.g.
     "Designed and ran null-model statistical validation of network
     community structure; performed sensitivity analysis across k values;

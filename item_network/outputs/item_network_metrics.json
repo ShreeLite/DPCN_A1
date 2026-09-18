@@ -1,0 +1,12 @@
+{
+  "n_nodes": 60,
+  "n_edges": 140,
+  "density": 0.07909604519774012,
+  "avg_clustering": 0.10732437140030865,
+  "avg_path_length_largest_cc": 3.0413533834586466,
+  "diameter_largest_cc": 7,
+  "n_components": 4,
+  "largest_cc_size": 57,
+  "n_communities": 9,
+  "modularity": 0.4283140234686541
+}
