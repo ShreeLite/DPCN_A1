@@ -177,11 +177,22 @@ Louvain modularity maximization was applied to the overall network to
 identify opinion communities. The same procedure was applied
 independently to each topic sub-network for comparison.
 
-\todo{PRATHISH (Statistical Validation): briefly describe your null-model validation
-methodology here (1 short paragraph) -- e.g. ``To assess whether the
-observed community structure is statistically meaningful, modularity
-was compared against a null distribution generated from N random graphs
-matched on node count, edge count, and degree sequence...''}
+\subsection{Null-Model Statistical Validation}
+To assess whether the observed community structure is statistically meaningful rather than
+an artefact of the graph's size and degree sequence, Louvain modularity was compared against
+a null distribution generated from 500 random graphs using the \textbf{configuration model}
+(Molloy--Reed): each random graph preserves the exact degree sequence of the real network
+(87 nodes, 134 edges for $k{=}8$) while rewiring edges uniformly at random, eliminating any
+community structure present in the original while keeping the marginal degree distribution
+intact. For each of the 500 null graphs, Louvain community detection was run and the
+resulting modularity was recorded; this yields an empirical sampling distribution of
+modularity under the null hypothesis of ``no community structure beyond what the degree
+sequence implies.'' A $z$-score was then computed as
+$z = (Q_{\text{obs}} - \bar{Q}_{\text{null}})\,/\,\sigma_{\text{null}}$,
+and a one-tailed empirical $p$-value was computed as the fraction of null-model runs
+producing modularity $\geq Q_{\text{obs}}$ (one-tailed because higher modularity signals
+more structure). This procedure was repeated for $k \in \{4, 8, 12\}$ to test sensitivity
+of the significance result to the sparsification parameter.
 
 \subsection{Item-Opinion Network Construction}
 \label{sec:item_network}
@@ -377,9 +388,37 @@ each draw items from two different topics rather than one.}
 \label{fig:item_heatmap}
 \end{figure}
 
-\todo{PRATHISH (Statistical Validation): insert null-model validation figures here (e.g.
-histogram of null-model modularity scores with observed modularity
-marked, significance test results).}
+
+\subsection{Null-Model Validation Results}
+
+Figure~\ref{fig:null_hist} shows the empirical distribution of Louvain modularity across
+500 configuration-model null graphs for the primary $k{=}8$ network. The observed modularity
+($Q = 0.578$) lies far to the right of the null distribution, which has mean
+$\bar{Q}_{\text{null}} = 0.494$ and standard deviation $\sigma_{\text{null}} = 0.017$.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.78\textwidth]{../figures/null_modularity_histogram.png}
+\caption{Distribution of Louvain modularity across 500 configuration-model null graphs
+(blue bars, with Gaussian fit) for the $k{=}8$ opinion network. The red dashed vertical
+line marks the observed modularity $Q = 0.578$; the corresponding $z$-score of 4.94 and
+empirical $p < 0.002$ confirm that the observed community structure is highly unlikely
+to arise by chance.}
+\label{fig:null_hist}
+\end{figure}
+
+Figure~\ref{fig:k_zscores} summarises the sensitivity analysis: $z$-scores for $k \in \{4, 8, 12\}$.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.72\textwidth]{../figures/k_sensitivity_zscores.png}
+\caption{Modularity $z$-scores across three mutual $k$-NN sparsification levels. The primary
+baseline ($k{=}8$, orange) and $k{=}12$ are both highly significant ($z > 4.9$, $p = 0.000$),
+while $k{=}4$ is not significant ($z = 0.88$, $p = 0.190$), indicating that very sparse graphs
+are too noisy for meaningful community detection at this dataset size.}
+\label{fig:k_zscores}
+\end{figure}
+
 
 % =====================================================================
 \section{Results and Discussion}
@@ -456,10 +495,48 @@ Technology and Education items, by contrast, have more spread (std.\
 people around -- consistent with them being the topics that best
 predict overall person-community membership.
 
-\todo{PRATHISH (Statistical Validation): discuss null-model validation findings here -- is the
-observed community structure statistically significant compared to
-random graphs of the same size/density? Does this justify $k=8$ as a
-sparsification parameter?}
+
+\subsection{Statistical Validation of Community Structure}
+
+The observed Louvain modularity of the primary $k{=}8$ opinion network ($Q = 0.578$) is
+\textbf{4.94 standard deviations above the mean of the configuration-model null distribution}
+($\bar{Q}_{\text{null}} = 0.494 \pm 0.017$), with an empirical $p$-value of $0.000$ (zero of
+500 null-model runs matched or exceeded the observed modularity). This is strong evidence
+that the 25 communities detected by Louvain are \emph{not} an artefact of the network's
+degree sequence: the real network is far more structured than any random rewiring of the
+same edges would produce. In practical terms, the community structure identified in this
+report is statistically real.
+
+\paragraph{Sensitivity analysis across $k \in \{4, 8, 12\}$.}
+Repeating the null-model test for sparser ($k{=}4$, 59 edges) and denser ($k{=}12$, 224 edges)
+mutual $k$-NN graphs reveals an important non-monotone pattern (Table~\ref{tab:k_sensitivity}).
+At $k{=}4$ the $z$-score collapses to $0.88$ and the $p$-value is $0.190$ --- the community
+structure for this very sparse graph is \emph{statistically indistinguishable from noise}.
+At $k{=}8$ and $k{=}12$ both networks are highly significant ($z = 4.94$ and $5.31$
+respectively, $p = 0.000$). Slightly higher $z$ at $k{=}12$ does \emph{not} argue for
+choosing $k{=}12$ over $k{=}8$: at $k{=}12$ the graph is considerably denser (224 edges vs.\
+134), merging fine-grained community structure into only 18 broad clusters and reducing
+modularity to $0.427$ --- it detects communities, but coarser ones. The $k{=}8$ setting
+thus represents the best-justified trade-off: statistically significant community structure
+($z \approx 4.9$, $p < 0.002$) at a sparsity level that preserves the fine-grained opinion
+groupings of interest ($Q = 0.578$, 25 communities).
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrrrrr}
+\toprule
+$k$ & Edges & Density & $Q_{\text{obs}}$ & $\bar{Q}_{\text{null}} \pm \sigma$ & $z$-score & $p$-value \\
+\midrule
+4  & 59  & 0.016 & 0.729 & $0.710 \pm 0.023$ & 0.88 & 0.190 \\
+8  & 134 & 0.036 & 0.578 & $0.494 \pm 0.017$ & 4.94 & $<0.002$ \\
+12 & 224 & 0.060 & 0.427 & $0.357 \pm 0.013$ & 5.31 & $<0.002$ \\
+\bottomrule
+\end{tabular}
+\caption{Null-model sensitivity analysis across $k \in \{4, 8, 12\}$. Configuration-model
+null distribution estimated from 500 random graph iterations (seed 42).}
+\label{tab:k_sensitivity}
+\end{table}
+
 
 \subsection{Overall Synthesis}
 \todo{ALL: once each subsection above is written, add 1 short paragraph
@@ -493,10 +570,19 @@ how this class thinks, collectively?}
     item-network figures and metrics table, and wrote the corresponding
     Item-Opinion Network subsections of Pipeline Followed, Analysis and
     Visualizations, and Results and Discussion.
-    \item \textbf{Prathish Ghosh}: \todo{fill in -- e.g.
-    "Designed and ran null-model statistical validation of network
-    community structure; performed sensitivity analysis across k values;
-    contributed to Results and Discussion."}
+    \item \textbf{Prathish Ghosh}: Designed and ran the full null-model statistical
+    validation pipeline (\texttt{validation/build\_null\_model.py}): implemented the
+    configuration-model (Molloy--Reed) null hypothesis test with 500 random-graph
+    iterations per $k$ value, computed $z$-scores and empirical one-tailed $p$-values for
+    the primary $k{=}8$ network, and produced the publication-quality modularity histogram
+    (Figure~\ref{fig:null_hist}). Performed sensitivity analysis across $k \in \{4, 8, 12\}$,
+    generated the comparative $z$-score bar chart (Figure~\ref{fig:k_zscores}), and saved
+    all results to \texttt{validation/outputs/null\_model\_results.json}. Wrote the
+    Null-Model Statistical Validation subsection of Pipeline Followed, the Null-Model
+    Validation Results subsection of Analysis and Visualizations, and the Statistical
+    Validation of Community Structure subsection of Results and Discussion (including
+    Table~\ref{tab:k_sensitivity}), establishing that $k{=}8$ produces statistically
+    significant community structure ($z = 4.94$, $p < 0.002$) while $k{=}4$ does not.
 \end{itemize}
 
 \end{document}
