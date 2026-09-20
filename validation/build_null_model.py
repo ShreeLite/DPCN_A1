@@ -128,6 +128,19 @@ print(f"  Observed Modularity: {modularity_obs_weighted:.4f}")
 print(f"  z-score: {z_score_k8:.3f}")
 print(f"  Empirical p-value: {empirical_p_k8:.4f} ({np.sum(null_mods_k8 >= modularity_obs_weighted)} / {N_ITER} runs >= observed)")
 
+# Per-iteration log for the primary k=8 run, so the null distribution
+# above is auditable/reproducible down to the individual random graph.
+iterations_df = pd.DataFrame({
+    "iteration": range(N_ITER),
+    "seed": [RNG_SEED + i for i in range(N_ITER)],
+    "modularity": null_mods_k8,
+    "n_communities": null_comms_k8,
+    "n_edges_kept": null_edges_k8,
+})
+iterations_csv_path = os.path.join(VALIDATION_OUT, "null_model_iterations.csv")
+iterations_df.to_csv(iterations_csv_path, index=False)
+print(f"  Saved per-iteration log to {iterations_csv_path}")
+
 # =====================================================================
 # STEP 4 — HISTOGRAM OF NULL MODULARITY SCORES
 # =====================================================================
@@ -155,7 +168,7 @@ plt.plot(
     color="#1F4E79",
     linewidth=2,
     linestyle="-",
-    label=f"Gaussian Fit ($\mu={mean_null_k8:.3f}, \sigma={std_null_k8:.3f}$)"
+    label=f"Gaussian Fit ($\\mu={mean_null_k8:.3f}, \\sigma={std_null_k8:.3f}$)"
 )
 
 # Observed modularity vertical dashed line
@@ -176,8 +189,8 @@ plt.legend(frameon=True, facecolor="white", edgecolor="#D0D0D0", fontsize=9.5, l
 # Annotation box
 stats_text = (
     f"Configuration Null ($N=500$):\n"
-    f"• Mean $\mu_{{null}} = {mean_null_k8:.3f}$\n"
-    f"• Std Dev $\sigma_{{null}} = {std_null_k8:.3f}$\n"
+    f"• Mean $\\mu_{{null}} = {mean_null_k8:.3f}$\n"
+    f"• Std Dev $\\sigma_{{null}} = {std_null_k8:.3f}$\n"
     f"• $z$-score = {z_score_k8:.2f}\n"
     f"• Empirical $p < 0.002$"
 )
@@ -308,7 +321,7 @@ colors = ["#5B9BD5" if k != 8 else "#ED7D31" for k in k_values]
 bars = plt.bar(k_labels, z_vals, color=colors, width=0.55, edgecolor="black", linewidth=0.8)
 
 plt.title("Sensitivity Analysis: Community Significance ($z$-score) vs. $k$-NN Sparsification", fontsize=11.5, fontweight="bold", pad=12)
-plt.ylabel("Modularity $z$-score ($\sigma$ above random expectation)", fontsize=10.5)
+plt.ylabel("Modularity $z$-score ($\\sigma$ above random expectation)", fontsize=10.5)
 plt.xlabel("Mutual Nearest-Neighbors Parameter ($k$)", fontsize=10.5)
 plt.grid(axis="y", linestyle=":", alpha=0.6)
 

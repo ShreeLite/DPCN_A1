@@ -5,6 +5,18 @@
 \usepackage{booktabs}
 \usepackage{amsmath}
 \usepackage{xcolor}
+\usepackage{subcaption}
+\usepackage{titlesec}
+\usepackage{placeins}
+
+\titlespacing*{\section}{0pt}{9pt}{4pt}
+\titlespacing*{\subsection}{0pt}{7pt}{3pt}
+\setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
+\setlength{\floatsep}{6pt plus 2pt minus 2pt}
+\setlength{\intextsep}{6pt plus 2pt minus 2pt}
+\setlength{\abovecaptionskip}{4pt}
+\setlength{\belowcaptionskip}{2pt}
+\raggedbottom
 
 \newcommand{\todo}[1]{\textcolor{red}{\textbf{[TODO: #1]}}}
 
@@ -23,40 +35,35 @@
 \section{Dataset Documentation}
 \label{sec:dataset}
 
-The data cleaning and encoding pipeline described below was implemented
-as part of the network construction workstream (see \texttt{build\_network.py});
-this section documents and elaborates on that process.
+The data cleaning and encoding pipeline below was implemented as part of the network
+construction workstream (\texttt{build\_network.py}); this section documents that
+process and adds further exploration on top of it.
 
-The raw survey collected responses from 96 students across 60 statements
-on a 5-point Likert scale (Strongly Disagree, Disagree, Neutral, Agree,
-Strongly Agree), evenly split into four topics of 15 items each:
-Technology (prefix \texttt{T}), Education (\texttt{E}), Ethics/Society
-(\texttt{S}), and Environment (\texttt{V}). Before any analysis, the raw
-responses were cleaned in two stages. First, the string ``No Comments''
-was treated as a genuinely missing response rather than a neutral
-(``Neutral'') opinion, since a respondent skipping a question and a
-respondent actively choosing the midpoint of the scale are not the same
-thing. Second, respondents who left more than 50\% of the 60 items blank
-were removed entirely (9 of the original 96 respondents), since a
-profile that is mostly missing cannot be meaningfully placed in an
-opinion network -- this left 87 usable respondents. Any remaining sparse
-gaps (a respondent missing a handful, but not most, of the items) were
-filled with that item's class-average response, a conservative choice
-that avoids manufacturing an artificially strong opinion where none was
-expressed. Finally, the ordinal Likert scale was encoded numerically as
-Strongly Disagree $=-2$, Disagree $=-1$, Neutral $=0$, Agree $=+1$,
-Strongly Agree $=+2$, producing the $87 \times 60$ numeric matrix
-(\texttt{outputs/encoded\_responses.csv}) that both the person-opinion
-and item-opinion networks in this report are built from.
+The raw survey collected responses from 96 students across 60 Likert-scale statements
+(Strongly Disagree to Strongly Agree) split evenly into four topics of 15 items each:
+Technology (\texttt{T}), Education (\texttt{E}), Ethics/Society (\texttt{S}), and
+Environment (\texttt{V}). ``No Comments'' was treated as a missing response rather than
+a neutral opinion, and respondents leaving more than 50\% of the survey blank were
+dropped (9 of 96), leaving 87 usable respondents. Remaining sparse gaps were filled with
+each item's class-average response. Responses were then encoded numerically as Strongly
+Disagree $=-2$ through Strongly Agree $=+2$, producing the $87 \times 60$ matrix
+(\texttt{outputs/encoded\_responses.csv}) that both networks in this report are built
+from.
 
 \subsection*{Descriptive Statistics and Data Exploration}
 
-To understand what the cleaned data actually looks like before any
-network is built, Table~\ref{tab:topic_stats} summarizes the encoded
-response distribution for each of the four topics (pooling all 87
-respondents $\times$ 15 items per topic).
+Table~\ref{tab:topic_stats} and Figure~\ref{fig:item_mean_dist} summarize the cleaned
+response matrix by topic. Every topic has a positive mean -- the class leans toward
+agreement almost everywhere -- but Environment and Ethics/Society are far more
+consensual (means 1.39/1.28, std.\ 0.75/0.83, $\sim$88\% Agree or above) than Education
+(mean 0.91, std.\ 1.15, the most contested topic). The most contested individual items
+are all Education items on assessment/attendance policy (e.g.\ ``class attendance
+should be compulsory''), where personal experience plausibly varies more than for
+abstract ethics/environment statements; the most consensual items are broad normative
+statements (e.g.\ ``companies should be held accountable for environmental impact'')
+that Likert surveys rarely see genuine disagreement on.
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \begin{tabular}{lrrrrr}
 \toprule
@@ -68,150 +75,85 @@ Technology      & 1.00 & 0.99 & 1 & 74.7\% & 8.2\%  \\
 Education       & 0.91 & 1.15 & 1 & 70.4\% & 13.7\% \\
 \bottomrule
 \end{tabular}
-\caption{Per-topic descriptive statistics of the encoded response
-matrix ($-2$ = Strongly Disagree, $+2$ = Strongly Agree). ``\% Agree+''
-and ``\% Disagree$-$'' give the share of all (respondent, item) values
-in that topic that were Agree/Strongly Agree or Disagree/Strongly
-Disagree respectively.}
+\caption{Per-topic descriptive statistics of the encoded response matrix ($-2$ =
+Strongly Disagree, $+2$ = Strongly Agree).}
 \label{tab:topic_stats}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.65\textwidth]{../../dataset_documentation/figures/topic_response_boxplot.png}
-\caption{Distribution of encoded responses by topic. All four topics
-skew positive; Education has the widest spread and the only topic
-whose interquartile range dips to Neutral.}
-\label{fig:topic_boxplot}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.85\textwidth]{../../dataset_documentation/figures/item_mean_distribution.png}
-\caption{Distribution of per-item mean opinion (60 items total),
-faceted by topic. Technology and Environment items are tightly
-concentrated around a single positive mean; Education items are the
-most dispersed, including the only two topic-level items with a
-negative mean.}
+\includegraphics[width=0.6\textwidth]{../../dataset_documentation/figures/item_mean_distribution.png}
+\caption{Distribution of per-item mean opinion (60 items), faceted by topic. Technology
+and Environment items concentrate tightly around one positive mean; Education items are
+the most dispersed, including the only two items with a negative mean.}
 \label{fig:item_mean_dist}
 \end{figure}
 
-Every topic has a positive mean, i.e.\ the class leans toward agreement
-on nearly every statement, but the four topics are not equally
-consensual. Environment and Ethics/Society have both the highest means
-\emph{and} the lowest standard deviations -- around 88\% of all
-responses to these items are Agree or Strongly Agree, and almost nobody
-disagrees. Education has the lowest mean and by far the highest spread
-(std.\ 1.15): the most contested individual items in the entire survey
-are all Education items concerning assessment and attendance policy
-(e.g.\ ``class attendance should be compulsory'', ``online learning can
-effectively complement classroom teaching''), where personal experience
-plausibly differs far more between students than it does for abstract
-ethics or environment statements. The most consensual items, by
-contrast, are broad normative statements (e.g.\ ``continuous learning
-and skill development are essential'', ``companies should be held
-accountable for the environmental impacts of their activities'') that a
-Likert survey rarely gets genuine disagreement on.
-
-\paragraph{A note on self-report survey bias.} This skew toward
-agreement is exactly what we would expect if several well-known biases
-in self-report surveys are present here. \textbf{Social desirability
-bias} means respondents tend to agree with statements framed as
-normatively ``good'' positions -- sustainability, ethics, personal
-responsibility -- regardless of their private attitude, particularly in
-a class survey where responses are not fully anonymous to the
-respondent's peer group. \textbf{Acquiescence bias} (a general tendency
-to agree with whatever is presented) would independently push every
-topic's mean upward, and is consistent with the fact that even the
-least-agreed-with topic (Education) still has a positive mean.
-\textbf{Self-selection} in who chose to complete the survey at all may
-also matter: 9 of 96 respondents were dropped for leaving over half the
-survey blank, and the remaining 87 who engaged with all 60 statements
-may be more opinionated or more agreeable than a true random sample of
-the class. Because of this skew, raw agreement levels should be read
-with caution, and the \emph{relative} structure captured by
-correlation-based similarity -- used throughout both the person-opinion
-network (Section~\ref{sec:pipeline}) and the item-opinion network
-(Section~\ref{sec:item_network}) -- is a more robust signal of real
-opinion differences than absolute response levels are.
+\paragraph{A note on self-report survey bias.} This skew is consistent with several
+well-known self-report biases: \textbf{social desirability} (agreeing with normatively
+``good'' positions -- sustainability, ethics -- regardless of true attitude, especially
+when responses aren't fully anonymous to peers); \textbf{acquiescence} (a general
+tendency to agree, consistent with even Education having a positive mean); and
+\textbf{self-selection} (the 87 respondents who completed the survey may be more
+agreeable or opinionated than a true random sample; 9 who left it mostly blank were
+dropped). Because of this skew, the \emph{relative}, correlation-based structure used
+throughout this report (Sections~\ref{sec:pipeline}--\ref{sec:item_network}) is a more
+robust signal of real opinion differences than raw agreement levels are.
 
 % =====================================================================
 \section{Pipeline Followed}
 \label{sec:pipeline}
 
-This section describes how the raw survey responses were transformed into
-an opinion network.
+This section describes how the raw survey responses were transformed into an opinion
+network.
 
 \subsection{Data Cleaning and Encoding}
-Respondents who left more than 50\% of the survey unanswered were removed
-(9 of 96 respondents), leaving 87 usable respondents. The string
-``No Comments'' was treated as a missing value rather than a neutral
-opinion. Likert responses were mapped to an ordinal numeric scale from
-$-2$ (Strongly Disagree) to $+2$ (Strongly Agree), and any remaining
-sparse gaps were filled with that item's class-average response.
+As detailed in Section~\ref{sec:dataset}: incomplete respondents were dropped (9 of
+96), ``No Comments'' was treated as missing, remaining gaps were filled with item
+means, and responses were encoded on a $-2$ to $+2$ ordinal scale.
 
 \subsection{Similarity Measure}
-Pairwise opinion similarity between respondents was computed using the
-\textbf{Pearson correlation coefficient} across their answer vectors,
-rather than cosine similarity or Euclidean distance. Correlation was
-chosen because it captures whether two respondents' opinions rise and
-fall \emph{together} across statements, and is invariant to a
-respondent's individual tendency to answer more or less extremely
-overall -- a scale bias rather than a genuine opinion difference.
+Pairwise opinion similarity between respondents was computed using the \textbf{Pearson
+correlation coefficient} across their answer vectors, rather than cosine similarity or
+Euclidean distance, since correlation captures whether two respondents' opinions rise
+and fall \emph{together} and is invariant to a respondent's tendency to answer more or
+less extremely overall -- a scale bias rather than a genuine opinion difference.
 
 \subsection{Graph Construction}
-The dense $87 \times 87$ similarity matrix was sparsified using
-\textbf{mutual $k$-Nearest-Neighbours} with $k=8$: an edge between
-respondents $i$ and $j$ was retained only if each was among the other's
-top-8 most similar peers. This produces a graph reflecting genuinely
-reciprocal opinion closeness, avoids an uninformative fully-connected
-graph, and sidesteps the need to hand-tune a similarity threshold.
-
-In addition to the overall network (built from all 60 items), four
-topic-specific sub-networks were constructed using the same procedure
-restricted to each topic's 15 items, to allow cross-topic comparison
-of clustering structure.
+The dense $87 \times 87$ similarity matrix was sparsified using \textbf{mutual
+$k$-Nearest-Neighbours} with $k=8$: an edge between respondents $i$ and $j$ was
+retained only if each was among the other's top-8 most similar peers, avoiding both an
+uninformative fully-connected graph and a hand-tuned similarity threshold. Four
+topic-specific sub-networks were built the same way, restricted to each topic's 15
+items, to allow cross-topic comparison of clustering structure.
 
 \subsection{Community Detection}
-Louvain modularity maximization was applied to the overall network to
-identify opinion communities. The same procedure was applied
-independently to each topic sub-network for comparison.
+Louvain modularity maximization was applied to the overall network to identify opinion
+communities, and independently to each topic sub-network for comparison.
 
 \subsection{Null-Model Statistical Validation}
-To assess whether the observed community structure is statistically meaningful rather than
-an artefact of the graph's size and degree sequence, Louvain modularity was compared against
-a null distribution generated from 500 random graphs using the \textbf{configuration model}
-(Molloy--Reed): each random graph preserves the exact degree sequence of the real network
-(87 nodes, 134 edges for $k{=}8$) while rewiring edges uniformly at random, eliminating any
-community structure present in the original while keeping the marginal degree distribution
-intact. For each of the 500 null graphs, Louvain community detection was run and the
-resulting modularity was recorded; this yields an empirical sampling distribution of
-modularity under the null hypothesis of ``no community structure beyond what the degree
-sequence implies.'' A $z$-score was then computed as
-$z = (Q_{\text{obs}} - \bar{Q}_{\text{null}})\,/\,\sigma_{\text{null}}$,
-and a one-tailed empirical $p$-value was computed as the fraction of null-model runs
-producing modularity $\geq Q_{\text{obs}}$ (one-tailed because higher modularity signals
-more structure). This procedure was repeated for $k \in \{4, 8, 12\}$ to test sensitivity
-of the significance result to the sparsification parameter.
+To assess whether the observed community structure is statistically meaningful rather
+than an artefact of the graph's size and degree sequence, Louvain modularity was
+compared against a null distribution from 500 random graphs generated with the
+\textbf{configuration model} (Molloy--Reed): each preserves the real network's exact
+degree sequence while rewiring edges uniformly at random, eliminating community
+structure but keeping the degree distribution intact. A $z$-score was computed as
+$z = (Q_{\text{obs}} - \bar{Q}_{\text{null}})/\sigma_{\text{null}}$, and a one-tailed
+empirical $p$-value as the fraction of null runs with modularity $\geq Q_{\text{obs}}$.
+This was repeated for $k \in \{4, 8, 12\}$ to test sensitivity to the sparsification
+parameter.
 
 \subsection{Item-Opinion Network Construction}
 \label{sec:item_network}
-In addition to the person-opinion network above, a second network was
-built with the opposite orientation: nodes are the 60 survey
-\emph{items} rather than the 87 respondents, and an edge reflects
-whether two items were answered similarly across respondents --
-i.e., whether people who agreed strongly with one statement also
-tended to agree strongly with the other. This is the exact transpose of
-the person-network pipeline: Pearson correlation was computed between
-every pair of items' 87-respondent answer vectors (rather than between
-respondents' 60-item vectors), and the resulting $60\times 60$
-correlation matrix was sparsified with the same mutual $k$-Nearest-Neighbours
-procedure ($k=8$) used for the person network, for direct methodological
-comparability. Louvain community detection was then applied to the
-resulting item network, and the discovered communities were compared
-against the survey's own four a-priori topic labels using Adjusted Rand
-Index, to test whether real opinion structure follows the survey's
-topic design or cuts across it.
+A second network was built with the opposite orientation: nodes are the 60 survey
+\emph{items} rather than the 87 respondents, and an edge reflects whether two items
+were answered similarly across respondents. This is the exact transpose of the
+person-network pipeline: Pearson correlation was computed between every pair of items'
+87-respondent answer vectors, and the resulting $60\times 60$ matrix was sparsified with
+the same mutual $k$-NN procedure ($k=8$) for direct comparability. Louvain communities
+were then compared against the survey's own four a-priori topic labels via Adjusted
+Rand Index (ARI), to test whether real opinion structure follows the survey's topic
+design or cuts across it.
 
 % =====================================================================
 \section{Analysis and Visualizations}
@@ -219,7 +161,7 @@ topic design or cuts across it.
 
 \subsection{Overall Network Structure}
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \begin{tabular}{lr}
 \toprule
@@ -241,26 +183,20 @@ Modularity & 0.578 \\
 \label{tab:overall_metrics}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.75\textwidth]{../figures/overall_network.png}
+\includegraphics[width=0.52\textwidth]{../figures/overall_network.png}
 \caption{Overall opinion network, nodes colored by Louvain community.}
 \label{fig:overall_network}
 \end{figure}
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.6\textwidth]{../figures/degree_distribution.png}
-\caption{Degree distribution of the overall opinion network.}
-\label{fig:degree_dist}
-\end{figure}
-
 \subsection{Topic Sub-Networks and Cross-Topic Comparison}
 
-Table~\ref{tab:topic_metrics} summarizes the four topic-specific
-sub-networks.
+Table~\ref{tab:topic_metrics} summarizes the four topic-specific sub-networks, and
+Figure~\ref{fig:degree_ari} shows the overall network's degree distribution alongside
+how similar each topic's community structure is to the overall network (ARI).
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \begin{tabular}{lrrr}
 \toprule
@@ -276,22 +212,35 @@ Environment & 193 & 0.052 \\
 \label{tab:topic_metrics}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.6\textwidth]{../figures/cross_topic_ari.png}
-\caption{Adjusted Rand Index between each topic's community structure
-and the overall network's community structure.}
+\begin{subfigure}[b]{0.47\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/degree_distribution.png}
+\caption{Degree distribution.}
+\label{fig:degree_dist}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.47\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/cross_topic_ari.png}
+\caption{Cross-topic ARI vs.\ overall.}
 \label{fig:ari}
+\end{subfigure}
+\caption{(a) Degree distribution of the overall opinion network. (b) Adjusted Rand
+Index between each topic's community structure and the overall network's community
+structure.}
+\label{fig:degree_ari}
 \end{figure}
 
 \subsection{Opinion Bridges}
 
-To identify respondents who structurally connect otherwise separate
-opinion communities, betweenness centrality was computed for every node,
-and the community diversity of each top-scoring node's immediate
-neighborhood was examined (Table~\ref{tab:bridges}).
+Betweenness centrality was computed for every node to identify respondents who
+structurally connect otherwise separate opinion communities, and the community
+diversity of each top-scoring node's immediate neighborhood was examined
+(Table~\ref{tab:bridges}, Figure~\ref{fig:bridges}).
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \begin{tabular}{lrrr}
 \toprule
@@ -308,35 +257,38 @@ Respondent & Betweenness Centrality & Own Community & Neighbor Communities Spann
 \label{tab:bridges}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.75\textwidth]{../figures/opinion_bridges.png}
+\includegraphics[width=0.46\textwidth]{../figures/opinion_bridges.png}
 \caption{Opinion bridges (red-ringed nodes) overlaid on the overall network.}
 \label{fig:bridges}
 \end{figure}
 
+\FloatBarrier
 \subsection{Community Opinion Archetypes}
 
-For every community with at least 4 members, the average deviation from
-the class-wide opinion score was computed per topic, producing
-interpretable ``opinion archetypes'' for each cluster
-(Figure~\ref{fig:archetypes}).
+For every community with at least 4 members, the average deviation from the class-wide
+opinion score was computed per topic, producing interpretable ``opinion archetypes''
+for each cluster (Figure~\ref{fig:archetypes}).
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.85\textwidth]{../figures/community_opinion_profiles.png}
-\caption{Opinion archetypes: deviation of each major community from the
-class-wide average, by topic.}
+\includegraphics[width=0.6\textwidth]{../figures/community_opinion_profiles.png}
+\caption{Opinion archetypes: deviation of each major community from the class-wide
+average, by topic.}
 \label{fig:archetypes}
 \end{figure}
 
+\FloatBarrier
 \subsection{Item-Opinion Network}
 \label{sec:item_analysis}
 
-Table~\ref{tab:item_metrics} summarizes the item-opinion network
-constructed in Section~\ref{sec:item_network}.
+Table~\ref{tab:item_metrics} summarizes the item-opinion network constructed in
+Section~\ref{sec:item_network}. Figure~\ref{fig:item_by_community} shows the network
+colored by discovered Louvain community; Figure~\ref{fig:item_heatmap} quantifies how
+those communities map onto the survey's four a-priori topics (ARI $=0.143$).
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \begin{tabular}{lr}
 \toprule
@@ -359,169 +311,126 @@ ARI vs.\ a-priori survey topics & 0.143 \\
 \label{tab:item_metrics}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.75\textwidth]{../../item_network/figures/item_network_by_community.png}
-\caption{Item-opinion network, nodes colored by Louvain community and
-labeled by item code (e.g.\ T01 = Technology item 1). Node layout is
-identical to Figure~\ref{fig:item_by_topic}.}
+\begin{subfigure}[b]{0.47\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../../item_network/figures/item_network_by_community.png}
+\caption{By Louvain community.}
 \label{fig:item_by_community}
-\end{figure}
-
-\begin{figure}[h]
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.47\textwidth}
 \centering
-\includegraphics[width=0.75\textwidth]{../../item_network/figures/item_network_by_topic.png}
-\caption{The same item-opinion network and layout as
-Figure~\ref{fig:item_by_community}, but colored by the survey's
-a-priori topic label instead of the discovered community. The visual
-mismatch between the two colorings reflects the low ARI (0.143) between
-them.}
-\label{fig:item_by_topic}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.7\textwidth]{../../item_network/figures/item_community_topic_heatmap.png}
-\caption{Number of items from each a-priori survey topic contained in
-each discovered Louvain item community. The two largest communities
-each draw items from two different topics rather than one.}
+\includegraphics[width=\textwidth]{../../item_network/figures/item_community_topic_heatmap.png}
+\caption{Community vs.\ topic composition.}
 \label{fig:item_heatmap}
+\end{subfigure}
+\caption{(a) Item-opinion network, nodes labeled by item code (e.g.\ T01 = Technology
+item 1) and colored by Louvain community. (b) Number of items from each a-priori
+survey topic contained in each discovered community -- the two largest communities
+each draw items from two different topics rather than one.}
+\label{fig:item_combined}
 \end{figure}
 
-
+\FloatBarrier
 \subsection{Null-Model Validation Results}
 
-Figure~\ref{fig:null_hist} shows the empirical distribution of Louvain modularity across
-500 configuration-model null graphs for the primary $k{=}8$ network. The observed modularity
-($Q = 0.578$) lies far to the right of the null distribution, which has mean
-$\bar{Q}_{\text{null}} = 0.494$ and standard deviation $\sigma_{\text{null}} = 0.017$.
+Figure~\ref{fig:null_hist} shows the empirical distribution of Louvain modularity
+across 500 configuration-model null graphs for the primary $k{=}8$ network alongside
+the $k$-sensitivity comparison. The observed modularity ($Q=0.578$) lies far to the
+right of the null distribution ($\bar{Q}_{\text{null}} = 0.494 \pm 0.017$).
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.78\textwidth]{../figures/null_modularity_histogram.png}
-\caption{Distribution of Louvain modularity across 500 configuration-model null graphs
-(blue bars, with Gaussian fit) for the $k{=}8$ opinion network. The red dashed vertical
-line marks the observed modularity $Q = 0.578$; the corresponding $z$-score of 4.94 and
-empirical $p < 0.002$ confirm that the observed community structure is highly unlikely
-to arise by chance.}
+\begin{subfigure}[b]{0.48\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../figures/null_modularity_histogram.png}
+\caption{Null modularity distribution ($k{=}8$).}
 \label{fig:null_hist}
-\end{figure}
-
-Figure~\ref{fig:k_zscores} summarises the sensitivity analysis: $z$-scores for $k \in \{4, 8, 12\}$.
-
-\begin{figure}[h]
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.48\textwidth}
 \centering
-\includegraphics[width=0.72\textwidth]{../figures/k_sensitivity_zscores.png}
-\caption{Modularity $z$-scores across three mutual $k$-NN sparsification levels. The primary
-baseline ($k{=}8$, orange) and $k{=}12$ are both highly significant ($z > 4.9$, $p = 0.000$),
-while $k{=}4$ is not significant ($z = 0.88$, $p = 0.190$), indicating that very sparse graphs
-are too noisy for meaningful community detection at this dataset size.}
+\includegraphics[width=\textwidth]{../figures/k_sensitivity_zscores.png}
+\caption{$z$-score by sparsification level.}
 \label{fig:k_zscores}
+\end{subfigure}
+\caption{(a) Distribution of Louvain modularity across 500 configuration-model null
+graphs for the $k{=}8$ network; the red dashed line marks the observed $Q=0.578$
+($z=4.94$, $p<0.002$). (b) Modularity $z$-scores across $k \in \{4,8,12\}$: $k{=}8$ and
+$k{=}12$ are both highly significant ($z>4.9$), while $k{=}4$ is not ($z=0.88$).}
+\label{fig:null_combined}
 \end{figure}
-
 
 % =====================================================================
 \section{Results and Discussion}
 \label{sec:results}
 
-\subsection{Person-Opinion Network (this workstream)}
+\subsection{Person-Opinion Network}
 
-The overall opinion network fragments into approximately 25 Louvain
-communities at a modularity of 0.578, indicating that class opinion is
-organized into many small, fine-grained groups rather than 2--3 broad
-ideological camps.
+The overall opinion network fragments into approximately 25 Louvain communities at a
+modularity of 0.578, indicating that class opinion is organized into many small,
+fine-grained groups rather than 2--3 broad ideological camps. Cross-topic ARI shows
+that \textbf{Education} (0.181) and \textbf{Technology} (0.101) opinions are the
+strongest predictors of a respondent's overall community membership, while
+\textbf{Ethics/Society} (0.023) and \textbf{Environment} (0.030) are essentially
+uncorrelated with it -- ethics and environmental questions attract broad, cross-cutting
+agreement or disagreement that doesn't track the same social groupings visible in
+tech/education opinions.
 
-Comparing topic-specific community structure to the overall network via
-Adjusted Rand Index shows that \textbf{Education} (ARI = 0.181) and
-\textbf{Technology} (ARI = 0.101) opinions are the strongest predictors
-of a respondent's overall opinion-community membership, while
-\textbf{Ethics/Society} (ARI = 0.023) and \textbf{Environment}
-(ARI = 0.030) opinions are essentially uncorrelated with overall
-clustering. This suggests that ethics and environmental questions attract
-broad, cross-cutting agreement or disagreement that does not track the
-same social groupings visible in tech/education opinions.
+The bridge analysis shows the network's cohesion depends on a handful of specific
+individuals rather than broad consensus: respondent 81's neighbors span 5 distinct
+communities, more than any other node, making this respondent (and the four others in
+Table~\ref{tab:bridges}) structurally critical to keeping otherwise separate opinion
+groups connected. The opinion archetypes are clearly interpretable: community 0 (9
+members) scores well below the class average on both Ethics/Society and Environment --
+a coherent ``skeptic'' archetype -- while community 16 (6 members) scores above average
+on every topic, a small ``strong-consensus'' cluster.
 
-The bridge analysis further shows that the network's cohesion depends on
-a small number of specific individuals rather than broad consensus:
-respondent 81's immediate neighbors span 5 distinct communities, more
-than any other node, making this respondent (and the four others in
-Table~\ref{tab:bridges}) structurally critical to keeping otherwise
-separate opinion groups connected.
+\subsection{Item-Opinion Network}
 
-The community opinion archetypes reveal clearly interpretable clusters:
-for example, community 0 (9 members) scores well below the class average
-on both Ethics/Society and Environment items -- a coherent ``skeptic''
-archetype -- while community 16 (6 members) scores above average on every
-topic, representing a small ``strong-consensus'' cluster.
+The item-opinion network is noticeably less cleanly separated than the person-opinion
+network: Louvain finds 9 communities at modularity $\approx 0.43$ (vs.\ 25 communities
+at 0.578 for people), three of which are singleton/near-singleton items that nobody's
+answer pattern strongly tracks -- survey items are more weakly and diffusely related to
+one another than respondents are to each other.
 
-\subsection{Item-Opinion Network (this workstream)}
+More importantly, item communities do \emph{not} reproduce the survey's four-topic
+design (ARI $=0.143$). Instead, the two largest communities each blend two nominal
+topics: one groups most Technology and Education items (a ``modernization /
+innovation-attitude'' dimension), the other most Ethics/Society and Environment items
+(a ``collective responsibility'' dimension) -- a genuinely different axis of variation
+than the survey's category labels suggest.
 
-The item-opinion network is noticeably less cleanly separated than the
-person-opinion network: Louvain finds 9 communities at modularity
-$\approx 0.43$ (versus 25 communities at modularity 0.578 for people),
-and three of those nine are singleton or near-singleton items with
-degree 0--1 -- individual statements that nobody's answer pattern
-strongly tracks. Survey items, in other words, are more weakly and
-diffusely related to one another than respondents are to each other.
-
-More importantly, the item communities do \emph{not} reproduce the
-survey's own four-topic design: ARI between Louvain item communities
-and the a-priori topic labels is only 0.143. Instead of Technology,
-Education, Ethics/Society, and Environment each forming their own
-tight cluster, the two largest communities each blend two nominal
-topics: one groups most Technology and Education items together (a
-``modernization / innovation-attitude'' dimension -- how someone feels
-about AI in the classroom correlates with how they feel about AI in
-society generally), while another groups most Ethics/Society and
-Environment items together (a ``collective responsibility''
-dimension). This is a genuinely different axis of variation than the
-survey's own category labels would suggest.
-
-This finding lines up closely with the person-network results above.
-Recall that Education and Technology opinions were the strongest
-predictors of a respondent's overall community membership (ARI 0.18 and
-0.10), while Ethics/Society and Environment opinions were essentially
-uncorrelated with it (ARI $\approx 0.02$--$0.03$). The item-level
-picture explains \emph{why}: Ethics/Society and Environment items are
-exactly the ones with the highest agreement and lowest spread in the
-descriptive statistics (Table~\ref{tab:topic_stats} -- means of 1.28
-and 1.39 out of 2, with the smallest standard deviations of any topic).
-When almost everyone agrees with an item, that item carries very little
-information about how respondents differ from one another, so it
-cannot drive person-level community structure even though it clusters
-tightly with other similarly-high-consensus items at the item level.
-Technology and Education items, by contrast, have more spread (std.\
-0.99 and 1.15) and therefore more genuine disagreement to organize
-people around -- consistent with them being the topics that best
-predict overall person-community membership.
-
+This explains \emph{why} Ethics/Society and Environment barely predict person-level
+clustering (ARI $\approx 0.02$--$0.03$) while Education and Technology do (0.18, 0.10):
+Ethics/Society and Environment items are exactly the ones with the highest agreement
+and lowest spread (Table~\ref{tab:topic_stats}, means 1.28/1.39, smallest std.). When
+almost everyone agrees with an item, it carries little information about how
+respondents differ, so it cannot drive person-level structure even though it clusters
+tightly with other high-consensus items. Technology and Education items have more
+spread (std.\ 0.99/1.15) and thus more genuine disagreement to organize people around.
 
 \subsection{Statistical Validation of Community Structure}
 
-The observed Louvain modularity of the primary $k{=}8$ opinion network ($Q = 0.578$) is
-\textbf{4.94 standard deviations above the mean of the configuration-model null distribution}
-($\bar{Q}_{\text{null}} = 0.494 \pm 0.017$), with an empirical $p$-value of $0.000$ (zero of
-500 null-model runs matched or exceeded the observed modularity). This is strong evidence
-that the 25 communities detected by Louvain are \emph{not} an artefact of the network's
-degree sequence: the real network is far more structured than any random rewiring of the
-same edges would produce. In practical terms, the community structure identified in this
-report is statistically real.
+The observed modularity of the primary $k{=}8$ network ($Q=0.578$) is \textbf{4.94
+standard deviations above the configuration-model null mean}
+($\bar{Q}_{\text{null}} = 0.494 \pm 0.017$), with empirical $p<0.002$ (0 of 500 null
+runs matched or exceeded it) -- strong evidence the 25 detected communities are not an
+artefact of the degree sequence, but statistically real structure.
 
-\paragraph{Sensitivity analysis across $k \in \{4, 8, 12\}$.}
-Repeating the null-model test for sparser ($k{=}4$, 59 edges) and denser ($k{=}12$, 224 edges)
-mutual $k$-NN graphs reveals an important non-monotone pattern (Table~\ref{tab:k_sensitivity}).
-At $k{=}4$ the $z$-score collapses to $0.88$ and the $p$-value is $0.190$ --- the community
-structure for this very sparse graph is \emph{statistically indistinguishable from noise}.
-At $k{=}8$ and $k{=}12$ both networks are highly significant ($z = 4.94$ and $5.31$
-respectively, $p = 0.000$). Slightly higher $z$ at $k{=}12$ does \emph{not} argue for
-choosing $k{=}12$ over $k{=}8$: at $k{=}12$ the graph is considerably denser (224 edges vs.\
-134), merging fine-grained community structure into only 18 broad clusters and reducing
-modularity to $0.427$ --- it detects communities, but coarser ones. The $k{=}8$ setting
-thus represents the best-justified trade-off: statistically significant community structure
-($z \approx 4.9$, $p < 0.002$) at a sparsity level that preserves the fine-grained opinion
-groupings of interest ($Q = 0.578$, 25 communities).
+Sensitivity analysis across $k \in \{4,8,12\}$ (Table~\ref{tab:k_sensitivity}) reveals a
+non-monotone pattern: at $k{=}4$ the $z$-score collapses to $0.88$ ($p=0.190$) --
+statistically indistinguishable from noise -- while $k{=}8$ and $k{=}12$ are both
+highly significant ($z=4.94$, $5.31$). The slightly higher $z$ at $k{=}12$ does not
+argue for preferring it: that graph is considerably denser (224 vs.\ 134 edges),
+merging fine-grained structure into only 18 broad clusters and reducing modularity to
+$0.427$. $k{=}8$ is thus the best-justified trade-off -- statistically significant
+structure ($z\approx4.9$, $p<0.002$) at a sparsity that preserves the fine-grained
+groupings of interest.
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \begin{tabular}{lrrrrrr}
 \toprule
@@ -537,52 +446,52 @@ null distribution estimated from 500 random graph iterations (seed 42).}
 \label{tab:k_sensitivity}
 \end{table}
 
-
 \subsection{Overall Synthesis}
-\todo{ALL: once each subsection above is written, add 1 short paragraph
-tying the three analyses together -- what does the combination of the
-person-network, item-network, and statistical validation tell us about
-how this class thinks, collectively?}
+
+Together, the three analyses tell a consistent story about how this class thinks. The
+person-opinion network shows the class is not split into a few broad ideological camps
+but into many small, genuine opinion groups (25 communities), and the statistical
+validation confirms this fragmentation is real: it is 4.94 standard deviations more
+structured than chance would produce at the same size and degree sequence, not noise
+dressed up as structure. The item-opinion network explains \emph{where that
+fragmentation comes from}: it is not spread evenly across the four survey topics, but
+concentrated specifically in Technology and Education attitudes, which form their own
+correlated ``modernization'' dimension and are the only topics with enough real
+disagreement (highest response spread, lowest cross-topic ARI overlap with consensus
+topics) to sort people into different camps. Ethics/Society and Environment, by
+contrast, form a separate ``collective responsibility'' item dimension that the class
+overwhelmingly agrees on (lowest spread, highest agreement), so despite being
+internally coherent as a cluster of questions, it carries almost no power to
+distinguish one respondent from another. In short: this class agrees broadly on ethics
+and environmental responsibility, but is genuinely and measurably divided -- into many
+small, statistically validated pockets rather than two polarized camps -- along
+attitudes toward technology and educational modernization.
 
 % =====================================================================
 \section{Individual Contribution}
 \label{sec:contribution}
 
 \begin{itemize}
-    \item \textbf{Shreem Shukla}: Cleaned and pre-processed the raw
-    survey data (missing-value handling, dropping incomplete responses,
-    Likert-to-numeric encoding); built the full person-opinion network
-    construction pipeline (Pearson similarity, mutual $k$-NN graph
-    construction, Louvain community detection, degree/betweenness/
-    eigenvector centrality); performed the cross-topic ARI comparison,
-    the opinion-bridge analysis, and the community opinion-archetype
-    analysis. Wrote the Pipeline Followed section, the data-cleaning
-    portion of Dataset Documentation, and this report skeleton.
-    \item \textbf{Kris Jain}: Wrote up and elaborated the Dataset
-    Documentation section (cleaning/encoding narrative, per-topic
-    descriptive statistics, distribution plots, and a discussion of
-    self-report survey bias). Designed and built the item-opinion
-    network (\texttt{item\_network/build\_item\_network.py}): item-item
-    Pearson correlation, mutual $k$-NN graph construction, Louvain
-    community detection, and an Adjusted Rand Index comparison against
-    the survey's a-priori topic labels to test whether real opinion
-    structure follows the survey's own topic design. Produced the
-    item-network figures and metrics table, and wrote the corresponding
-    Item-Opinion Network subsections of Pipeline Followed, Analysis and
-    Visualizations, and Results and Discussion.
-    \item \textbf{Prathish Ghosh}: Designed and ran the full null-model statistical
-    validation pipeline (\texttt{validation/build\_null\_model.py}): implemented the
-    configuration-model (Molloy--Reed) null hypothesis test with 500 random-graph
-    iterations per $k$ value, computed $z$-scores and empirical one-tailed $p$-values for
-    the primary $k{=}8$ network, and produced the publication-quality modularity histogram
-    (Figure~\ref{fig:null_hist}). Performed sensitivity analysis across $k \in \{4, 8, 12\}$,
-    generated the comparative $z$-score bar chart (Figure~\ref{fig:k_zscores}), and saved
-    all results to \texttt{validation/outputs/null\_model\_results.json}. Wrote the
-    Null-Model Statistical Validation subsection of Pipeline Followed, the Null-Model
-    Validation Results subsection of Analysis and Visualizations, and the Statistical
-    Validation of Community Structure subsection of Results and Discussion (including
-    Table~\ref{tab:k_sensitivity}), establishing that $k{=}8$ produces statistically
-    significant community structure ($z = 4.94$, $p < 0.002$) while $k{=}4$ does not.
+    \item \textbf{Shreem Shukla}: Cleaned and pre-processed the raw survey data;
+    built the full person-opinion network construction pipeline (Pearson similarity,
+    mutual $k$-NN graph construction, Louvain community detection, degree/betweenness/
+    eigenvector centrality); performed the cross-topic ARI comparison, the
+    opinion-bridge analysis, and the community opinion-archetype analysis. Wrote the
+    Pipeline Followed section, the data-cleaning portion of Dataset Documentation, and
+    this report skeleton.
+    \item \textbf{Kris Jain}: Wrote up and elaborated the Dataset Documentation
+    section (descriptive statistics, distribution plots, survey-bias discussion).
+    Designed and built the item-opinion network (\texttt{item\_network/}): item-item
+    Pearson correlation, mutual $k$-NN construction, Louvain community detection, and
+    an ARI comparison against the survey's topic labels. Produced the item-network
+    figures/metrics and wrote the corresponding Item-Opinion Network subsections.
+    \item \textbf{Prathish Ghosh}: Designed and ran the null-model statistical
+    validation pipeline (\texttt{validation/}): configuration-model (Molloy--Reed) null
+    hypothesis test with 500 random-graph iterations per $k$ value, $z$-scores and
+    empirical $p$-values, and the sensitivity analysis across $k \in \{4,8,12\}$. Wrote
+    the Null-Model Statistical Validation subsections of Pipeline Followed, Analysis,
+    and Results and Discussion, establishing that $k{=}8$ produces statistically
+    significant community structure ($z=4.94$, $p<0.002$) while $k{=}4$ does not.
 \end{itemize}
 
 \end{document}
